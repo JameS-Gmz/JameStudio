@@ -1,0 +1,45 @@
+<div class="searchbar">
+  <div class="search-container">
+    <input
+      class="search"
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Search projects..."
+      (input)="onInput()"
+      [disabled]="isLoading" />
+    <button class="search-btn" (click)="reset()">
+      <img src="/ion_cross.svg" alt="Effacer">
+    </button>
+  </div>
+
+  <div class="search-results-container" *ngIf="showResults">
+    <div class="loading-spinner" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="error-menu" *ngIf="errorMessage && !isLoading">
+      <div class="error">
+        {{ errorMessage }}
+      </div>
+    </div>
+        
+    <div class="menu" *ngIf="projects.length > 0 && !isLoading">
+      <ul class="toggle-search">
+        <li *ngFor="let project of projects">
+          <a class="link" [routerLink]="['/project/id', project.id]" (click)="closeResults()">
+            <div class="project-preview">
+              <img class="imageUrl" [src]="project.imageUrl" [alt]="project.title">
+              <div class="project-info">
+                <strong>{{ project.title }}</strong>
+                <div class="technologies" *ngIf="project.technologies && project.technologies.length > 0">
+                  <span *ngFor="let tech of project.technologies" class="tech-tag-small">{{tech}}</span>
+                </div>
+                <p class="description">{{ project.description | slice:0:100 }}...</p>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

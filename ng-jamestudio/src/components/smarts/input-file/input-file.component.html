@@ -1,0 +1,54 @@
+<div class="input-image" 
+  [class.drag-over]="isDragOver"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
+  
+  <input 
+    type="file" 
+    id="file-upload" 
+    [multiple]="multiple"
+    (change)="onFileSelected($event)"
+    accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm,video/ogg,video/quicktime">
+
+  <ng-container *ngIf="selectedFiles.length > 0">
+    <div class="preview-container" [class.multiple]="multiple">
+      <div *ngFor="let previewUrl of previewUrls; let i = index" class="preview-item">
+        <img *ngIf="fileTypes[i] === 'image'" [src]="previewUrl" [alt]="selectedFiles[i]?.name ?? 'Image'" (error)="handleImageError($event, i)">
+        <video *ngIf="fileTypes[i] === 'video'" 
+               [src]="previewUrl" 
+               controls 
+               preload="metadata"
+               [title]="selectedFiles[i]?.name ?? 'Video'"
+               (error)="handleVideoError($event, i)"
+               (loadedmetadata)="onVideoMetadataLoaded(i)">
+          Votre navigateur ne supporte pas la lecture de vidéos.
+        </video>
+        <div class="file-overlay">
+          <span class="file-name">
+            <i class="fas" [class.fa-image]="fileTypes[i] === 'image'" [class.fa-video]="fileTypes[i] === 'video'"></i>
+            {{ selectedFiles[i]?.name ?? (fileTypes[i] === 'video' ? 'Video' : 'Image') }}
+          </span>
+          <button class="remove-file" (click)="removeFile(i)" *ngIf="multiple">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <button class="change-file" (click)="triggerFileInput($event)">
+        <i class="fas fa-plus"></i>
+        {{ multiple ? 'Ajouter des fichiers' : 'Changer le fichier' }}
+      </button>
+    </div>
+  </ng-container>
+
+  <div *ngIf="selectedFiles.length === 0" class="upload-placeholder" (click)="triggerFileInput($event)">
+    <i class="fas fa-cloud-upload-alt"></i>
+    <p>{{ description }}</p>
+    <span class="upload-hint" *ngIf="multiple">Vous pouvez sélectionner plusieurs images ou vidéos</span>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ errorMessage }}
+  </div>
+</div>

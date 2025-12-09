@@ -1,0 +1,48 @@
+<div class="card-wrapper">
+<div class="card">
+        <a class="nav-link active" [routerLink]="['/project/id', game.id]">
+            <div class="image">
+                <img *ngIf="!isVideo" 
+                     [src]="mediaUrl" 
+                     [alt]="game.title || 'Image du projet'" 
+                     (error)="onImageError($event)">
+                <video *ngIf="isVideo" 
+                       [src]="mediaUrl" 
+                       [title]="game.title || 'Vidéo du projet'"
+                       preload="metadata"
+                       muted
+                       (error)="onVideoError($event)"
+                       (click)="$event.preventDefault(); $event.stopPropagation()">
+                  Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+                <div *ngIf="isVideo" class="video-overlay">
+                  <i class="fas fa-play"></i>
+                </div>
+            </div>
+            <div class="content-game">
+                <div class="title">
+                    <h2> {{game.title}}</h2>
+                </div>
+                <div class="description">
+                  <textarea value={{game.description}} readonly></textarea>
+                </div>
+                <div class="authorStudio">
+                    <h3>{{game.authorStudio}}</h3>
+                </div>
+                <div class="technologies" *ngIf="game.technologies && game.technologies.length > 0">
+                    <div class="tech-tags">
+                        <span *ngFor="let tech of game.technologies" class="tech-tag">{{tech}}</span>
+                    </div>
+                </div>
+                <div class="links" *ngIf="game.github || game.demo">
+                    <a *ngIf="game.github" [href]="game.github" target="_blank" class="github-link" (click)="$event.stopPropagation()">
+                        GitHub
+                    </a>
+                    <a *ngIf="game.demo" [href]="game.demo" target="_blank" class="demo-link" (click)="$event.stopPropagation()">
+                        Démo
+                    </a>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

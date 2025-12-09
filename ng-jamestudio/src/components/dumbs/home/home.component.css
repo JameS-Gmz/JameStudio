@@ -1,0 +1,85 @@
+.home-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-xl) var(--spacing-md);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-section h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: var(--spacing-md);
+  letter-spacing: 2px;
+}
+
+.welcome-section .subtitle {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--spacing-md);
+  font-weight: 300;
+}
+
+.welcome-section .description {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.games-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  box-sizing: border-box;
+}
+
+.games-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.games-section h2 {
+  color: #ffffff;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .welcome-section {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  .welcome-section h1 {
+    font-size: 2rem;
+  }
+
+  .welcome-section .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .welcome-section .description {
+    font-size: 1rem;
+  }
+
+  .games-container {
+    padding: 10px;
+  }
+  
+  .games-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+}

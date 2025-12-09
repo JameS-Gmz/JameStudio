@@ -1,0 +1,47 @@
+<div class="add-project-container">
+  <div class="message-container">
+    <div *ngIf="hasErrors" class="error-container">
+      <div class="error-header">
+        <i class="fas fa-exclamation-circle"></i>
+        <strong>Erreurs de validation</strong>
+      </div>
+      <div *ngIf="formErrors.general" class="error-message general-error">
+        {{ formErrors.general }}
+      </div>
+      <div *ngIf="formErrors.title" class="error-message field-error">
+        <strong>Titre :</strong> {{ formErrors.title }}
+      </div>
+      <div *ngIf="formErrors.description" class="error-message field-error">
+        <strong>Description :</strong> {{ formErrors.description }}
+      </div>
+      <div *ngIf="formErrors.github" class="error-message field-error">
+        <strong>GitHub :</strong> {{ formErrors.github }}
+      </div>
+      <div *ngIf="formErrors.demo" class="error-message field-error">
+        <strong>Démo :</strong> {{ formErrors.demo }}
+      </div>
+    </div>
+    
+    <div *ngIf="isSuccess" class="success-message">
+      <i class="fas fa-check-circle"></i>
+      {{ successMessage }}
+    </div>
+  </div>
+
+  <div class="form-wrapper">
+    <app-form-game #postGameForm></app-form-game>
+    
+    <div class="submit-section">
+      <button 
+        class="submit-button" 
+        type="button" 
+        (click)="onSubmit()"
+        [disabled]="isSubmitting"
+      >
+        <i class="fas fa-plus-circle" *ngIf="!isSubmitting"></i>
+        <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+        <span>{{ isSubmitting ? 'Création en cours...' : 'Ajouter le Projet' }}</span>
+      </button>
+    </div>
+  </div>
+</div>

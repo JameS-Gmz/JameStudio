@@ -1,0 +1,199 @@
+<div class="contact-container">
+  <div class="contact-header">
+    <h1>Contact & Settings</h1>
+    <p class="subtitle">Manage your settings and sign out</p>
+  </div>
+
+  <!-- Success and error messages -->
+  <div class="messages-container" *ngIf="successMessage || errorMessage">
+    <div class="message success-message" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i>
+      <span>{{ successMessage }}</span>
+      <button class="close-message" (click)="closeMessages()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="message error-message" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>{{ errorMessage }}</span>
+      <button class="close-message" (click)="closeMessages()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="contact-content">
+    <!-- Contact Section -->
+    <div class="section contact-section">
+      <div class="section-header">
+        <i class="fas fa-envelope"></i>
+        <h2>Contact Me</h2>
+      </div>
+      <div class="section-content">
+        <p class="section-description">
+          Feel free to contact me with any questions, collaboration requests, or professional opportunities.
+        </p>
+        <div class="contact-details">
+          <ul>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:jms.gomez12@gmail.com">jms.gomez12&#64;gmail.com</a>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+33636021502">+33 6 36 02 15 02</a>
+            </li>
+            <li>
+              <i class="fab fa-github"></i>
+              <a href="https://github.com/JameS-Gmz" target="_blank" rel="noopener noreferrer">github.com/JameS-Gmz</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Section -->
+    <div class="section user-section">
+      <div class="section-header">
+        <i class="fas fa-user"></i>
+        <h2>My Account</h2>
+      </div>
+      <div class="section-content">
+        <div *ngIf="currentUserEmail" class="user-info">
+          <p><strong>Registered email:</strong> {{ currentUserEmail }}</p>
+          <p class="info-text">Your theme preferences are saved for this email.</p>
+        </div>
+        <div *ngIf="!currentUserEmail && !showEmailInput" class="user-info">
+          <p>To save your theme preferences, please enter your email address.</p>
+          <button class="set-email-button" (click)="openEmailInput()">
+            <i class="fas fa-envelope"></i>
+            <span>Set my email</span>
+          </button>
+        </div>
+
+        <!-- Email form -->
+        <div *ngIf="showEmailInput" class="email-input-form">
+          <label for="new-email">Email</label>
+          <input 
+            type="email" 
+            id="new-email"
+            [(ngModel)]="newEmail"
+            placeholder="your@email.com"
+            class="email-input"
+          />
+          <div class="form-actions">
+            <button class="save-button" (click)="saveEmail()">
+              <i class="fas fa-check"></i>
+              Save
+            </button>
+            <button class="cancel-button" (click)="cancelEmailInput()">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+          </div>
+        </div>
+        <div *ngIf="isLoggedIn" class="logout-section">
+          <p class="admin-info">You are logged in as an administrator.</p>
+          <button class="logout-button" (click)="logout()" *ngIf="!showLogoutConfirm">
+            <i class="fas fa-power-off"></i>
+            <span>Sign out</span>
+          </button>
+          
+          <!-- Logout confirmation -->
+          <div *ngIf="showLogoutConfirm" class="confirmation-box">
+            <p>Are you sure you want to sign out?</p>
+            <div class="confirmation-actions">
+              <button class="confirm-button" (click)="confirmLogout()">
+                <i class="fas fa-check"></i>
+                Yes
+              </button>
+              <button class="cancel-button" (click)="cancelLogout()">
+                <i class="fas fa-times"></i>
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Theme Section -->
+    <div class="section theme-section">
+      <div class="section-header">
+        <i class="fas fa-palette"></i>
+        <h2>Theme Personalization</h2>
+      </div>
+      <div class="section-content">
+        <p class="section-description">
+          Customize the look of the site to your preferences. Your choices are saved only for your email.
+        </p>
+        <div *ngIf="!currentUserEmail" class="warning-box">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>To save your preferences, first set your email address in the "My Account" section.</p>
+        </div>
+
+        <!-- Accent color picker -->
+        <div class="color-picker-group">
+          <label class="color-label">
+            <i class="fas fa-highlighter"></i>
+            Accent color
+          </label>
+          <div class="color-input-wrapper">
+            <input 
+              type="color" 
+              class="color-input" 
+              [value]="currentTheme.accent"
+              (input)="onAccentColorChange($event)"
+            />
+            <input 
+              type="text" 
+              class="color-text-input" 
+              [value]="currentTheme.accent"
+              (input)="onAccentTextChange($event)"
+              placeholder="#ffffff"
+            />
+          </div>
+        </div>
+
+        <!-- Reset button and Preview on same line -->
+        <div class="theme-actions">
+          <div class="theme-actions-row">
+            <button class="reset-button" (click)="resetTheme()" *ngIf="!showResetConfirm">
+              <i class="fas fa-undo"></i>
+              <span>Reset to default</span>
+            </button>
+            
+            <!-- Reset confirmation -->
+            <div *ngIf="showResetConfirm" class="confirmation-box">
+              <p>Do you want to reset the theme to default values (black and white)?</p>
+              <div class="confirmation-actions">
+                <button class="confirm-button" (click)="confirmResetTheme()">
+                  <i class="fas fa-check"></i>
+                  Yes
+                </button>
+                <button class="cancel-button" (click)="cancelResetTheme()">
+                  <i class="fas fa-times"></i>
+                  No
+                </button>
+              </div>
+            </div>
+
+            <!-- Theme preview -->
+            <div class="theme-preview-inline">
+              <h3>Preview</h3>
+              <div class="preview-box" [style.background-color]="currentTheme.background">
+                <div class="preview-accent" [style.color]="currentTheme.accent">
+                  <i class="fas fa-star"></i>
+                  <span>Accent text</span>
+                </div>
+                <div class="preview-button" [style.background-color]="currentTheme.accent" [style.color]="currentTheme.background">
+                  Button
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

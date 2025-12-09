@@ -1,0 +1,111 @@
+<div class="form-container">
+  <h2 class="form-title">Ajouter un Projet</h2>
+  
+  <form #postGameForm="ngForm" class="project-form">
+    <!-- Section Images -->
+    <div class="form-section image-section">
+      <label class="section-label">Images du Projet</label>
+      <p class="form-hint">Vous pouvez ajouter plusieurs images</p>
+      <div class="image-upload-area" [class.has-images]="previewImageUrls.length > 0">
+        <app-input-file 
+          [multiple]="true"
+          (filesSelected)="onFilesSelected($event)" 
+          (fileSelected)="onFileSelected($event)"
+          text="Choisir des images"
+          description="Cliquez ou glissez-déposez pour ajouter des images">
+        </app-input-file>
+        
+        <div *ngIf="previewImageUrls.length > 0" class="images-preview-grid">
+          <div *ngFor="let previewUrl of previewImageUrls; let i = index" class="preview-item">
+            <img [src]="previewUrl" alt="Preview {{ i + 1 }}">
+            <button type="button" class="remove-image" (click)="removeImage(i)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Informations de base -->
+    <div class="form-section">
+      <label class="section-label" for="title">
+        Titre du Projet <span class="required">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="title" 
+        name="title" 
+        class="form-input" 
+        placeholder="Ex: Mon Portfolio Web" 
+        required 
+        ngModel
+      />
+    </div>
+
+    <div class="form-section">
+      <label class="section-label" for="description">
+        Description <span class="required">*</span>
+      </label>
+      <textarea 
+        id="description" 
+        name="description" 
+        class="form-textarea" 
+        placeholder="Décrivez votre projet, ses fonctionnalités, les technologies utilisées..."
+        rows="6"
+        required 
+        ngModel
+      ></textarea>
+    </div>
+
+    <!-- Section Technologies -->
+    <div class="form-section">
+      <label class="section-label" for="technologies">
+        Technologies Utilisées
+      </label>
+      <input 
+        type="text" 
+        id="technologies" 
+        name="technologies" 
+        class="form-input" 
+        placeholder="Ex: Angular, TypeScript, Node.js, MySQL (séparées par des virgules)"
+        ngModel
+      />
+      <p class="form-hint">Séparez les technologies par des virgules</p>
+    </div>
+
+    <!-- Section Liens -->
+    <div class="form-section links-section">
+      <label class="section-label">Liens du Projet</label>
+      
+      <div class="link-input-group">
+        <label class="link-label" for="github">
+          <i class="fab fa-github"></i>
+          Lien GitHub
+        </label>
+        <input 
+          type="url" 
+          id="github" 
+          name="github" 
+          class="form-input" 
+          placeholder="https://github.com/username/project"
+          ngModel
+        />
+      </div>
+
+      <div class="link-input-group">
+        <label class="link-label" for="demo">
+          <i class="fas fa-external-link-alt"></i>
+          Lien de Démo (optionnel)
+        </label>
+        <input 
+          type="url" 
+          id="demo" 
+          name="demo" 
+          class="form-input" 
+          placeholder="https://jamesstudio.fr/project"
+          ngModel
+        />
+      </div>
+    </div>
+  </form>
+</div>

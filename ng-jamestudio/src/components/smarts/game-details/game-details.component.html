@@ -1,0 +1,255 @@
+<div class="project-details-page" *ngIf="project && project.id">
+    <!-- En-tête du projet -->
+    <div class="project-header">
+        <h1 class="project-title">{{project?.title || 'Loading...'}}</h1>
+        
+        <!-- Carousel d'images -->
+        <div class="project-carousel">
+            <app-carousel [images]="images"></app-carousel>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="project-main-content">
+        <!-- Colonne principale : Description et informations -->
+        <div class="project-main-column">
+            <!-- Description -->
+            <section class="project-section description-section">
+                <h2>Description</h2>
+                <div class="description-content">
+                    <p>{{project?.description || 'Aucune description disponible'}}</p>
+                </div>
+            </section>
+
+            <!-- Technologies -->
+            <section class="project-section technologies-section" *ngIf="project?.technologies && project.technologies.length > 0">
+                <h2>Technologies utilisées</h2>
+                <div class="tech-tags">
+                    <span *ngFor="let tech of project.technologies" class="tech-tag">{{tech}}</span>
+                </div>
+            </section>
+
+            <!-- Liens externes -->
+            <section class="project-section links-section" *ngIf="project?.github || project?.demo">
+                <h2>Liens</h2>
+                <div class="project-links">
+                    <a *ngIf="project.github" [href]="project.github" target="_blank" rel="noopener noreferrer" class="link-button github-link">
+                        <i class="fab fa-github"></i>
+                        <span>Voir sur GitHub</span>
+                    </a>
+                    <a *ngIf="project.demo" [href]="project.demo" target="_blank" rel="noopener noreferrer" class="link-button demo-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Voir la démo</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Colonne latérale : Actions et métadonnées -->
+        <div class="project-sidebar">
+            <!-- Note moyenne -->
+            <section class="sidebar-section rating-section" *ngIf="averageRating > 0 || totalRatings > 0">
+                <h3>Note moyenne</h3>
+                <div class="rating-display">
+                    <div class="rating-value">{{averageRating > 0 ? averageRating.toFixed(1) : 'N/A'}}<span class="rating-max">/5</span></div>
+                    <div class="rating-count">{{totalRatings}} {{totalRatings > 1 ? 'notes' : 'note'}}</div>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <section class="sidebar-section actions-section">
+                <h3>Actions</h3>
+                <button 
+                    class="action-button library-button" 
+                    [class.in-library]="isInLibrary"
+                    [disabled]="loading"
+                    (click)="toggleLibrary()">
+                    <i class="fas" [class.fa-bookmark]="!isInLibrary" [class.fa-bookmark-slash]="isInLibrary"></i>
+                    <span>{{isInLibrary ? 'Retirer de mes projets' : 'Ajouter à mes projets'}}</span>
+                    <span *ngIf="loading" class="loading-spinner-small"></span>
+                </button>
+            </section>
+
+            <!-- Métadonnées -->
+            <section class="sidebar-section metadata-section">
+                <h3>Informations</h3>
+                <div class="metadata-list">
+                    <div class="metadata-item" *ngIf="project?.authorStudio">
+                        <span class="metadata-label">Auteur</span>
+                        <span class="metadata-value">{{project.authorStudio}}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Dernière mise à jour</span>
+                        <span class="metadata-value">{{project?.updatedAt ? (project.updatedAt | date:'mediumDate') : 'Non spécifiée'}}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Date de création</span>
+                        <span class="metadata-value">{{project?.createdAt ? (project.createdAt | date:'mediumDate') : 'Non spécifiée'}}</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Section commentaires -->
+    <div class="comments-section">
+        <!-- Formulaire de commentaire -->
+        <section class="project-section comment-form-section">
+            <h2 *ngIf="!currentUserComment">Laisser un avis</h2>
+            <h2 *ngIf="currentUserComment">Modifier votre avis</h2>
+            
+            <!-- Formulaire d'identification -->
+            <div class="comment-identity-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="comment-email">
+                            Email <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="comment-email"
+                            [(ngModel)]="commentEmail"
+                            placeholder="votre@email.com"
+                            class="comment-input"
+                            [disabled]="isSubmitting"
+                            required
+                        />
+                        <p class="form-hint">Votre email est requis pour éviter le spam</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment-name">
+                            Nom / Pseudo (optionnel)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="comment-name"
+                            [(ngModel)]="commentAuthorName"
+                            placeholder="Votre nom"
+                            class="comment-input"
+                            [disabled]="isSubmitting"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Note -->
+            <div class="rating-input-section">
+                <label>Note (optionnel)</label>
+                <app-rating-component 
+                    [rating]="commentRating"
+                    [readonly]="false"
+                    (ratingChange)="onRatingChange($event)">
+                </app-rating-component>
+            </div>
+            
+            <!-- Commentaire -->
+            <div class="comment-section">
+                <label for="comment-content">Votre commentaire</label>
+                <textarea 
+                    id="comment-content"
+                    [(ngModel)]="commentContent"
+                    placeholder="Écrivez votre avis ici..." 
+                    rows="4" 
+                    class="review-textarea"
+                    [disabled]="isSubmitting">
+                </textarea>
+                
+                <div class="error-message" *ngIf="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ errorMessage }}
+                </div>
+                
+                <div class="comment-actions">
+                    <button 
+                        class="submit-review" 
+                        (click)="submitComment()"
+                        [disabled]="isSubmitting">
+                        <i class="fas" [class.fa-paper-plane]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
+                        <span *ngIf="!isSubmitting">{{ currentUserComment ? 'Modifier' : 'Publier' }} l'avis</span>
+                        <span *ngIf="isSubmitting">Publication...</span>
+                    </button>
+                    
+                    <button 
+                        *ngIf="currentUserComment && canEditComment(currentUserComment) && !showDeleteConfirm"
+                        class="delete-review" 
+                        (click)="requestDeleteComment(currentUserComment!.id)"
+                        [disabled]="isSubmitting">
+                        <i class="fas fa-trash"></i>
+                        Supprimer
+                    </button>
+                    
+                    <!-- Confirmation de suppression -->
+                    <div *ngIf="showDeleteConfirm" class="delete-confirmation">
+                        <p>Êtes-vous sûr de vouloir supprimer votre commentaire ?</p>
+                        <div class="confirmation-actions">
+                            <button class="confirm-button" (click)="confirmDeleteComment()" [disabled]="isSubmitting">
+                                <i class="fas fa-check"></i>
+                                Oui
+                            </button>
+                            <button class="cancel-button" (click)="cancelDeleteComment()" [disabled]="isSubmitting">
+                                <i class="fas fa-times"></i>
+                                Non
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Liste des commentaires -->
+        <section class="project-section comments-list-section">
+            <div class="section-header">
+                <h2>Commentaires</h2>
+                <div class="comments-stats">
+                    <span class="comments-count">{{ totalComments }} {{ totalComments > 1 ? 'commentaires' : 'commentaire' }}</span>
+                    <span class="average-rating" *ngIf="averageRating > 0">
+                        <i class="fas fa-star"></i>
+                        {{ averageRating.toFixed(1) }}/5
+                    </span>
+                </div>
+            </div>
+            
+            <div class="comments-list" *ngIf="comments.length > 0">
+                <div class="comment-item" *ngFor="let comment of comments">
+                    <div class="comment-header">
+                        <div class="comment-user">
+                            <div class="user-avatar-initials" [title]="comment.authorName">
+                                {{ getInitials(comment.authorName) }}
+                            </div>
+                            <div class="user-info">
+                                <span class="username">{{ comment.authorName }}</span>
+                                <span class="user-email-hint" *ngIf="canEditComment(comment)">(vous)</span>
+                            </div>
+                        </div>
+                        <div class="comment-meta">
+                            <app-rating-component 
+                                [rating]="comment.rating || 0"
+                                [readonly]="true">
+                            </app-rating-component>
+                            <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-content" *ngIf="comment.content">
+                        <p>{{ comment.content }}</p>
+                    </div>
+                    
+                    <div class="comment-footer" *ngIf="comment.rating && !comment.content">
+                        <p class="rating-only">Note uniquement ({{ comment.rating }}/5)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="no-comments" *ngIf="comments.length === 0">
+                <i class="fas fa-comments"></i>
+                <p>Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="loading-state" *ngIf="!project || !project.id">
+    <div class="spinner-large"></div>
+    <p>Chargement du projet...</p>
+</div>

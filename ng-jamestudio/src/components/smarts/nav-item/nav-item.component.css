@@ -1,0 +1,25 @@
+.nav-item {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%
+}
+
+.nav-item img {
+  min-height: auto;
+}
+
+.nav-link {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: auto;
+}
+
+p {
+  color: white;
+  font-size: auto;
+}

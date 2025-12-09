@@ -1,0 +1,6 @@
+<div *ngIf="isLoading">Loading...</div>
+
+<div class="project-list" *ngIf="!isLoading">
+  <h2>{{ listType === 'recent' ? 'Recently Added' : 'Recently Updated' }}</h2>
+  <app-card-game *ngFor="let project of projects" [game]="project"></app-card-game>
+</div>

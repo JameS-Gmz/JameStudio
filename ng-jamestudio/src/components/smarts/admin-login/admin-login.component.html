@@ -1,0 +1,32 @@
+<div class="admin-login-container">
+  <div class="login-card">
+    <h1>Accès Admin</h1>
+    <p class="subtitle">Connectez-vous pour ajouter ou modifier des projets</p>
+    
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Entrez le mot de passe"
+          class="form-input"
+          [disabled]="isLoading"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="isLoading">Connexion...</span>
+      </button>
+    </form>
+  </div>
+</div>
+
