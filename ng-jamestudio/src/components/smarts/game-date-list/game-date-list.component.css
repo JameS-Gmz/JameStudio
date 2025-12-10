@@ -67,21 +67,47 @@
 @media (max-width: 768px) {
   .project-container {
     padding: var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .project-list {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     padding: var(--spacing-sm);
+    width: 100%;
+    max-width: 100%;
+    justify-items: center;
   }
   
+  .project-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .project-section h2 {
     font-size: 1.3rem;
     margin-bottom: var(--spacing-sm);
+    text-align: center;
+    width: 100%;
   }
 }
 
 @media (max-width: 480px) {
+  .project-container {
+    padding: 10px;
+  }
+
   .project-list {
     grid-template-columns: 1fr;
+    padding: 10px;
+    justify-items: center;
+  }
+
+  .project-section h2 {
+    font-size: 1.2rem;
+    padding: 0 10px;
   }
 }

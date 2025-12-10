@@ -395,21 +395,6 @@
     gap: var(--spacing-sm);
 }
 
-.user-avatar-initials {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: var(--bg-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 1rem;
-    border: 2px solid var(--accent);
-    flex-shrink: 0;
-}
-
 .user-info {
     display: flex;
     flex-direction: column;

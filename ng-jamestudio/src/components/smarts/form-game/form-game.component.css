@@ -221,13 +221,18 @@
 @media (max-width: 480px) {
   .form-container {
     padding: var(--spacing-sm);
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .form-title {
     font-size: 1.3rem;
+    text-align: center;
   }
 
   .images-preview-grid {
     grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
   }
 }
