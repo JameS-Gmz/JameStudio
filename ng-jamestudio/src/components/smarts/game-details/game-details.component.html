@@ -171,7 +171,7 @@
                     </button>
                     
                     <button 
-                        *ngIf="currentUserComment && canEditComment(currentUserComment) && !showDeleteConfirm"
+                        *ngIf="currentUserComment && !showDeleteConfirm"
                         class="delete-review" 
                         (click)="requestDeleteComment(currentUserComment!.id)"
                         [disabled]="isSubmitting">
@@ -214,12 +214,9 @@
                 <div class="comment-item" *ngFor="let comment of comments">
                     <div class="comment-header">
                         <div class="comment-user">
-                            <div class="user-avatar-initials" [title]="comment.authorName">
-                                {{ getInitials(comment.authorName) }}
-                            </div>
                             <div class="user-info">
                                 <span class="username">{{ comment.authorName }}</span>
-                                <span class="user-email-hint" *ngIf="canEditComment(comment)">(vous)</span>
+                                <span class="user-email-hint" *ngIf="userEmail && comment.email.toLowerCase() === userEmail.toLowerCase()">(vous)</span>
                             </div>
                         </div>
                         <div class="comment-meta">

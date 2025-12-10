@@ -64,7 +64,7 @@ export class ApiService {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<Project>(
-      this.apiConfig.getEndpointUrl('/api/projects'),
+      this.apiConfig.getEndpointUrl('/api/projects/'),
       projectData,
       { headers }
     ).pipe(
@@ -153,8 +153,11 @@ export class ApiService {
       this.apiConfig.getEndpointUrl(`/api/projects/user/${userId}`)
     ).pipe(
       catchError(error => {
-        this.logger.error(`Erreur lors de la récupération des projets de l'utilisateur ${userId}`, error);
-        return throwError(() => error);
+        this.logger.warn(`Endpoint /api/projects/user/${userId} non disponible, fallback vers getAllProjects()`, error);
+        // Fallback: récupérer tous les projets et filtrer côté client
+        return this.getAllProjects().pipe(
+          map(projects => projects.filter(p => p.UserId === userId))
+        );
       })
     );
   }
@@ -165,11 +168,11 @@ export class ApiService {
     if (!this.useApi) {
       return this.localStorageFallback.uploadFileAsBase64(file, projectId);
     }
-
+  
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file); // correspond à upload.single('file')
     formData.append('projectId', projectId.toString());
-
+  
     return this.http.post<FileUploadResponse>(
       this.apiConfig.getEndpointUrl('/game/upload/file'),
       formData
@@ -180,6 +183,7 @@ export class ApiService {
       })
     );
   }
+  
 
   getImageUrl(projectId: number): Observable<string | null> {
     if (!this.useApi) {

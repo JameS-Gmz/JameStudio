@@ -10,7 +10,26 @@ router.get('/', asyncHandler(async (req, res) => {
   res.json(projects);
 }));
 
-// GET projet par ID
+// GET rechercher des projets (doit être avant /:id)
+router.get('/search', asyncHandler(async (req, res) => {
+  const { q } = req.query;
+  
+  if (!q || q.trim() === '') {
+    return res.json([]);
+  }
+  
+  const projects = await db.searchProjects(q);
+  res.json(projects);
+}));
+
+// GET projets par utilisateur (doit être avant /:id)
+router.get('/user/:userId', asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const projects = await db.getProjectsByUserId(userId);
+  res.json(projects);
+}));
+
+// GET projet par ID (doit être en dernier)
 router.get('/:id', asyncHandler(async (req, res) => {
   const { id } = req.params;
   const project = await db.getProjectById(id);
@@ -24,22 +43,47 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST créer un projet
 router.post('/', asyncHandler(async (req, res) => {
-  const { title, description, imageUrl } = req.body;
+  const {
+    title, description, imageUrl, images, technologies,
+    github, demo, UserId, StatusId, LanguageId,
+    ControllerIds, PlatformIds, genreIds, tagIds,
+    price, authorStudio, madeWith
+  } = req.body;
   
   if (!title || title.trim() === '') {
     return res.status(400).json({ error: 'Le titre est requis' });
   }
 
-  const project = await db.createProject({ title, description, imageUrl });
+  const project = await db.createProject({
+    title, description, imageUrl, images, technologies,
+    github, demo, UserId, StatusId, LanguageId,
+    ControllerIds, PlatformIds, genreIds, tagIds,
+    price, authorStudio, madeWith
+  });
   res.status(201).json(project);
 }));
 
 // PUT mettre à jour un projet
 router.put('/:id', asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { title, description, imageUrl } = req.body;
+  const {
+    title, description, imageUrl, images, technologies,
+    github, demo, UserId, StatusId, LanguageId,
+    ControllerIds, PlatformIds, genreIds, tagIds,
+    price, authorStudio, madeWith
+  } = req.body;
   
-  const project = await db.updateProject(id, { title, description, imageUrl });
+  const project = await db.updateProject(id, {
+    title, description, imageUrl, images, technologies,
+    github, demo, UserId, StatusId, LanguageId,
+    ControllerIds, PlatformIds, genreIds, tagIds,
+    price, authorStudio, madeWith
+  });
+  
+  if (!project) {
+    return res.status(404).json({ error: 'Projet non trouvé' });
+  }
+  
   res.json(project);
 }));
 
