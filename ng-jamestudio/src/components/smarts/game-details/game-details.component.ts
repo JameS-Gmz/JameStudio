@@ -128,7 +128,7 @@ export class GameDetailsComponent implements OnInit {
       this.totalRatings = response.totalRatings;
 
       if (this.userEmail) {
-        this.currentUserComment = this.commentService.getUserCommentForProject(
+        this.currentUserComment = await this.commentService.getUserCommentForProject(
           Number(this.projectId),
           this.userEmail
         );
@@ -251,9 +251,9 @@ export class GameDetailsComponent implements OnInit {
     }
   }
 
-  canEditComment(comment: Comment): boolean {
+  async canEditComment(comment: Comment): Promise<boolean> {
     if (!this.userEmail) return false;
-    return this.commentService.canEditComment(comment.id, this.userEmail);
+    return await this.commentService.canEditComment(comment.id, this.userEmail);
   }
 
   formatDate(date: Date): string {
@@ -264,14 +264,5 @@ export class GameDetailsComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
-  }
-
-  getInitials(name: string): string {
-    if (!name || !name.trim()) return '?';
-    const parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return name.trim().substring(0, 2).toUpperCase();
   }
 }
