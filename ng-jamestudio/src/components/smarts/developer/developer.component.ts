@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../../services/project.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-developer',
@@ -20,7 +21,8 @@ export class DeveloperComponent implements OnInit {
   projectToDelete: number | null = null;
 
   constructor(
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class DeveloperComponent implements OnInit {
     try {
       this.loading = true;
       this.error = null;
-      const developerId = 1;
+      const developerId = await this.userService.getCurrentDeveloperId();
       
       if (!developerId) {
         throw new Error('Developer ID not found');

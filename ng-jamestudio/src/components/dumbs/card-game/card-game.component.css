@@ -38,7 +38,7 @@
 
 .image {
   width: 100%;
-  height:  100%; ;
+  aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
 }
@@ -203,6 +203,16 @@ video {
   transform: translateY(-2px);
 }
 
+/* Réduction automatique des technologies si nombreuses */
+.tech-tags.many-techs .tech-tag {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.tech-tags.many-techs {
+  gap: 0.35rem;
+}
+
 .links {
   display: flex;
   gap: 0.5rem;
@@ -244,8 +254,28 @@ a {
   }
 }
 
+@media (max-width: 768px) {
+  .card-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
 @media (max-width: 320px) {
   .card-wrapper {
     width: 100%;
+    max-width: 100%;
   }
 }

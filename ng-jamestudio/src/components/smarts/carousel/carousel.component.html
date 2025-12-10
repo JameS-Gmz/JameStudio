@@ -9,16 +9,12 @@
         *ngIf="!isVideo(images[currentIndex])"
         [src]="images[currentIndex]"
         [alt]="'Image ' + (currentIndex + 1)"
-        width="800"
-        height="400"
         (error)="handleImageError($event)"
         (swipeleft)="nextSlide()"
         (swiperight)="prevSlide()">
       <video 
         *ngIf="isVideo(images[currentIndex])"
         [src]="images[currentIndex]"
-        width="800"
-        height="400"
         controls
         preload="metadata"
         (error)="handleVideoError($event)"

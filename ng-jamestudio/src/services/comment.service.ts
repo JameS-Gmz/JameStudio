@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, firstValueFrom } from 'rxjs';
 
 export interface Comment {
   id: number;
@@ -22,66 +24,50 @@ export interface CommentResponse {
   providedIn: 'root'
 })
 export class CommentService {
-  private readonly COMMENTS_KEY = 'jamesstudio_comments';
-  private nextCommentId: number = 1;
+  private readonly API_URL = 'https://api.jamestudio.fr/api/comments';
 
-  constructor() {
-    this.initializeComments();
-  }
+  constructor(private http: HttpClient) {}
 
-  private initializeComments(): void {
-    const comments = this.getAllComments();
-    if (comments.length > 0) {
-      this.nextCommentId = Math.max(...comments.map(c => c.id)) + 1;
-    }
-  }
-
-  private getAllComments(): Comment[] {
-    const data = localStorage.getItem(this.COMMENTS_KEY);
-    if (!data) return [];
-    
+  // Get all comments for a project with statistics
+  async getProjectComments(projectId: number): Promise<CommentResponse> {
     try {
-      const comments = JSON.parse(data);
-      return comments.map((c: any) => ({
+      const response = await firstValueFrom(
+        this.http.get<CommentResponse>(`${this.API_URL}/project/${projectId}`)
+      );
+      
+      if (!response) {
+        return { comments: [], averageRating: 0, totalComments: 0, totalRatings: 0 };
+      }
+      
+      // Convertir les dates string en Date objects
+      const comments = response.comments.map(c => ({
         ...c,
         createdAt: new Date(c.createdAt),
-        updatedAt: new Date(c.updatedAt),
+        updatedAt: new Date(c.updatedAt)
       }));
-    } catch (e) {
-      console.error('Error parsing comments:', e);
-      return [];
+      
+      return {
+        ...response,
+        comments
+      };
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      return { comments: [], averageRating: 0, totalComments: 0, totalRatings: 0 };
     }
   }
 
-  private saveComments(comments: Comment[]): void {
-    localStorage.setItem(this.COMMENTS_KEY, JSON.stringify(comments));
-  }
-
-  // Get all comments for a project
-  async getProjectComments(projectId: number): Promise<CommentResponse> {
-    const allComments = this.getAllComments();
-    const projectComments = allComments.filter(c => c.projectId === projectId);
-    
-    // Calculer les statistiques
-    const ratings = projectComments
-      .filter(c => c.rating !== null && c.rating !== undefined)
-      .map(c => c.rating!);
-    
-    const averageRating = ratings.length > 0
-      ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length
-      : 0;
-    
-    const totalComments = projectComments.length;
-    const totalRatings = ratings.length;
-
-    return {
-      comments: projectComments.sort((a, b) => 
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      ),
-      averageRating: Math.round(averageRating * 10) / 10,
-      totalComments,
-      totalRatings
-    };
+  // Get all comments for a project (Observable version)
+  getProjectComments$(projectId: number): Observable<CommentResponse> {
+    return this.http.get<CommentResponse>(`${this.API_URL}/project/${projectId}`).pipe(
+      map(response => ({
+        ...response,
+        comments: response.comments.map(c => ({
+          ...c,
+          createdAt: new Date(c.createdAt),
+          updatedAt: new Date(c.updatedAt)
+        }))
+      }))
+    );
   }
 
   // Create a new comment
@@ -96,27 +82,68 @@ export class CommentService {
     if (!this.isValidEmail(email)) {
       throw new Error('Email invalide');
     }
-
+    
     if (!content?.trim() && !rating) {
       throw new Error('Veuillez ajouter un commentaire ou une note');
     }
 
-    const allComments = this.getAllComments();
-    const newComment: Comment = {
-      id: this.nextCommentId++,
+    try {
+      const response = await firstValueFrom(
+        this.http.post<Comment>(this.API_URL, {
+          projectId,
+          author: authorName || 'Anonyme',
+          authorName: authorName || 'Anonyme',
+          content: content?.trim() || null,
+          rating: rating || null,
+          email: email.toLowerCase().trim()
+        })
+      );
+      
+      if (!response) {
+        throw new Error('Erreur lors de la création du commentaire');
+      }
+      
+      return {
+        ...response,
+        createdAt: new Date(response.createdAt),
+        updatedAt: new Date(response.updatedAt)
+      };
+    } catch (error: any) {
+      console.error('Error creating comment:', error);
+      throw new Error(error.error?.error || 'Erreur lors de la création du commentaire');
+    }
+  }
+
+  // Create a new comment (Observable version)
+  createComment$(
+    projectId: number, 
+    content: string, 
+    rating: number | null,
+    email: string,
+    authorName: string
+  ): Observable<Comment> {
+    if (!this.isValidEmail(email)) {
+      throw new Error('Email invalide');
+    }
+    
+    if (!content?.trim() && !rating) {
+      throw new Error('Veuillez ajouter un commentaire ou une note');
+    }
+
+    return this.http.post<Comment>(this.API_URL, {
       projectId,
+      author: authorName || 'Anonyme',
+      authorName: authorName || 'Anonyme',
       content: content?.trim() || null,
       rating: rating || null,
-      email: email.toLowerCase().trim(),
-      authorName: authorName?.trim() || 'Anonyme',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-
-    allComments.push(newComment);
-    this.saveComments(allComments);
-
-    return newComment;
+      email: email.toLowerCase().trim()
+    }).pipe(
+      map(response => ({
+        ...response,
+        createdAt: new Date(response.createdAt),
+        updatedAt: new Date(response.updatedAt)
+      }))
+    );
   }
 
   // Update a comment (seulement si l'email correspond)
@@ -130,30 +157,52 @@ export class CommentService {
       throw new Error('Email invalide');
     }
 
-    const allComments = this.getAllComments();
-    const commentIndex = allComments.findIndex(c => c.id === commentId);
+    try {
+      const response = await firstValueFrom(
+        this.http.put<Comment>(`${this.API_URL}/${commentId}`, {
+          content: content?.trim() || null,
+          rating: rating || null,
+          email: email.toLowerCase().trim()
+        })
+      );
+      
+      if (!response) {
+        throw new Error('Erreur lors de la mise à jour du commentaire');
+      }
+      
+      return {
+        ...response,
+        createdAt: new Date(response.createdAt),
+        updatedAt: new Date(response.updatedAt)
+      };
+    } catch (error: any) {
+      console.error('Error updating comment:', error);
+      throw new Error(error.error?.error || 'Erreur lors de la mise à jour du commentaire');
+    }
+  }
 
-    if (commentIndex === -1) {
-      throw new Error('Commentaire non trouvé');
+  // Update a comment (Observable version)
+  updateComment$(
+    commentId: number, 
+    content: string, 
+    rating: number | null,
+    email: string
+  ): Observable<Comment> {
+    if (!this.isValidEmail(email)) {
+      throw new Error('Email invalide');
     }
 
-    const comment = allComments[commentIndex];
-    
-    // Vérifier que l'email correspond
-    if (comment.email.toLowerCase() !== email.toLowerCase()) {
-      throw new Error('Vous ne pouvez modifier que vos propres commentaires');
-    }
-
-    // Mettre à jour le commentaire
-    allComments[commentIndex] = {
-      ...comment,
+    return this.http.put<Comment>(`${this.API_URL}/${commentId}`, {
       content: content?.trim() || null,
       rating: rating || null,
-      updatedAt: new Date()
-    };
-
-    this.saveComments(allComments);
-    return allComments[commentIndex];
+      email: email.toLowerCase().trim()
+    }).pipe(
+      map(response => ({
+        ...response,
+        createdAt: new Date(response.createdAt),
+        updatedAt: new Date(response.updatedAt)
+      }))
+    );
   }
 
   // Delete a comment (seulement si l'email correspond)
@@ -162,44 +211,59 @@ export class CommentService {
       throw new Error('Email invalide');
     }
 
-    const allComments = this.getAllComments();
-    const commentIndex = allComments.findIndex(c => c.id === commentId);
+    try {
+      await firstValueFrom(
+        this.http.delete(`${this.API_URL}/${commentId}`, {
+          body: { email: email.toLowerCase().trim() }
+        })
+      );
+    } catch (error: any) {
+      console.error('Error deleting comment:', error);
+      throw new Error(error.error?.error || 'Erreur lors de la suppression du commentaire');
+    }
+  }
 
-    if (commentIndex === -1) {
-      throw new Error('Commentaire non trouvé');
+  // Delete a comment (Observable version)
+  deleteComment$(commentId: number, email: string): Observable<void> {
+    if (!this.isValidEmail(email)) {
+      throw new Error('Email invalide');
     }
 
-    const comment = allComments[commentIndex];
-    
-    // Vérifier que l'email correspond
-    if (comment.email.toLowerCase() !== email.toLowerCase()) {
-      throw new Error('Vous ne pouvez supprimer que vos propres commentaires');
-    }
-
-    allComments.splice(commentIndex, 1);
-    this.saveComments(allComments);
+    return this.http.delete<void>(`${this.API_URL}/${commentId}`, {
+      body: { email: email.toLowerCase().trim() }
+    });
   }
 
   // Vérifier si un email peut modifier un commentaire
-  canEditComment(commentId: number, email: string): boolean {
+  async canEditComment(commentId: number, email: string): Promise<boolean> {
     if (!this.isValidEmail(email)) return false;
-    
-    const allComments = this.getAllComments();
-    const comment = allComments.find(c => c.id === commentId);
-    
-    if (!comment) return false;
-    
-    return comment.email.toLowerCase() === email.toLowerCase();
+
+    try {
+      const comment = await firstValueFrom(
+        this.http.get<Comment>(`${this.API_URL}/${commentId}`)
+      );
+      if (!comment) return false;
+      
+      return comment.email.toLowerCase() === email.toLowerCase();
+    } catch (error) {
+      console.error('Error checking comment edit permission:', error);
+      return false;
+    }
   }
 
   // Obtenir le commentaire d'un utilisateur pour un projet (basé sur l'email)
-  getUserCommentForProject(projectId: number, email: string): Comment | null {
+  async getUserCommentForProject(projectId: number, email: string): Promise<Comment | null> {
     if (!this.isValidEmail(email)) return null;
-    
-    const allComments = this.getAllComments();
-    return allComments.find(
-      c => c.projectId === projectId && c.email.toLowerCase() === email.toLowerCase()
-    ) || null;
+
+    try {
+      const response = await this.getProjectComments(projectId);
+      return response.comments.find(
+        c => c.email.toLowerCase() === email.toLowerCase()
+      ) || null;
+    } catch (error) {
+      console.error('Error fetching user comment:', error);
+      return null;
+    }
   }
 
   private isValidEmail(email: string): boolean {
@@ -213,3 +277,4 @@ export class CommentService {
     return this.getProjectComments(gameId);
   }
 }
+

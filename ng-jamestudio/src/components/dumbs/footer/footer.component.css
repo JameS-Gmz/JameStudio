@@ -194,6 +194,11 @@
     .footer-content {
         grid-template-columns: 1fr;
         gap: 1.2rem;
+        text-align: center;
+    }
+
+    .footer-section {
+        align-items: center;
     }
 
     .footer-bottom {
@@ -201,6 +206,7 @@
         gap: 0.8rem;
         text-align: center;
         margin-top: 1.2rem;
+        align-items: center;
     }
 }
 
@@ -212,9 +218,19 @@
     .footer-content {
         padding: 0 1rem;
         gap: 1rem;
+        text-align: center;
+    }
+
+    .footer-section {
+        align-items: center;
     }
 
     .footer-bottom {
         padding: 0.8rem 1rem 0;
+        align-items: center;
+    }
+
+    .footer-toggle {
+        width: 150px;
     }
 }
