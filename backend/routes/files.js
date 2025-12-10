@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
-const asyncHandler = require('../middleware/asyncHandler');
-const Logger = require('../config/logger');
 const upload = require('../config/upload');
+const asyncHandler = require('express-async-handler');
+const db = require('../config/database');
+const Logger = require('../config/logger');
+const cors = require('cors');
 
-// Upload d'un fichier, optionnellement lié à un projet
-router.post('/upload/file', upload.single('file'), asyncHandler(async (req, res) => {
+// --- Préflight OPTIONS pour le upload ---
+router.options('/upload/file', cors());
+
+router.post('/upload/file', cors(), upload.single('file'), asyncHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'Aucun fichier fourni' });
   }
@@ -24,9 +27,12 @@ router.post('/upload/file', upload.single('file'), asyncHandler(async (req, res)
         });
       }
       
-      await db.updateProjectImageUrl(projectId, fileUrl);
+      // Ajouter l'image au tableau images au lieu d'écraser imageUrl
+      const result = await db.addProjectImage(projectId, fileUrl);
       res.json({ 
         fileUrl, 
+        images: result.images,
+        imageUrl: result.imageUrl,
         message: 'Fichier uploadé et projet mis à jour' 
       });
     } catch (error) {
@@ -41,17 +47,72 @@ router.post('/upload/file', upload.single('file'), asyncHandler(async (req, res)
   }
 }));
 
-// Récupère l'image d'un projet
-router.get('/image/:projectId', asyncHandler(async (req, res) => {
+// GET récupérer l'URL de l'image principale d'un projet
+router.get('/image/:projectId', cors(), asyncHandler(async (req, res) => {
   const { projectId } = req.params;
-  const imageUrl = await db.getProjectImageUrl(projectId);
   
-  if (!imageUrl || imageUrl.trim() === '' || imageUrl === 'null') {
-    return res.json({ fileUrl: null });
+  try {
+    // Vérifier d'abord si le projet existe
+    const project = await db.getProjectById(projectId);
+    
+    if (!project) {
+      return res.status(404).json({ 
+        error: 'Projet non trouvé',
+        projectId: parseInt(projectId)
+      });
+    }
+    
+    // Récupérer l'URL de l'image principale
+    const imageUrl = await db.getProjectImageUrl(projectId);
+    
+    if (!imageUrl) {
+      return res.status(404).json({ 
+        error: 'Image non trouvée pour ce projet',
+        projectId: parseInt(projectId)
+      });
+    }
+    
+    res.json({ imageUrl, projectId: parseInt(projectId) });
+  } catch (error) {
+    Logger.error(`Erreur lors de la récupération de l'image du projet ${projectId}:`, error);
+    res.status(500).json({ 
+      error: 'Erreur lors de la récupération de l\'image',
+      projectId: parseInt(projectId)
+    });
   }
+}));
+
+// GET récupérer toutes les images d'un projet
+router.get('/images/:projectId', cors(), asyncHandler(async (req, res) => {
+  const { projectId } = req.params;
   
-  res.json({ fileUrl: imageUrl });
+  try {
+    // Vérifier d'abord si le projet existe
+    const project = await db.getProjectById(projectId);
+    
+    if (!project) {
+      return res.status(404).json({ 
+        error: 'Projet non trouvé',
+        projectId: parseInt(projectId)
+      });
+    }
+    
+    // Récupérer toutes les images
+    const images = project.images || [];
+    const imageUrl = project.imageUrl || null;
+    
+    res.json({ 
+      imageUrl, 
+      images,
+      projectId: parseInt(projectId) 
+    });
+  } catch (error) {
+    Logger.error(`Erreur lors de la récupération des images du projet ${projectId}:`, error);
+    res.status(500).json({ 
+      error: 'Erreur lors de la récupération des images',
+      projectId: parseInt(projectId)
+    });
+  }
 }));
 
 module.exports = router;
-
