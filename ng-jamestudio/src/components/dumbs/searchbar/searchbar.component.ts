@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
+import { TranslationService } from '../../../services/translation.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -28,8 +29,13 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   constructor(
     private projectService: ProjectService, 
     private fileService: FileService,
+    private translationService: TranslationService,
     private elementRef: ElementRef
   ) {}
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -76,10 +82,9 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     
     try {
       const result = await this.projectService.searchProjects(query.trim());
-      console.log('Search results:', result); // Debug
+      console.log('Search results:', result);
       
       this.projects = result.map((project: any) => {
-        // Gérer les technologies qui peuvent être une string ou un tableau
         let technologies: string[] = [];
         if (project.technologies) {
           if (typeof project.technologies === 'string') {
@@ -100,12 +105,12 @@ export class SearchbarComponent implements OnInit, OnDestroy {
         };
       });
       
-      this.errorMessage = this.projects.length === 0 ? 'Aucun projet trouvé' : '';
+      this.errorMessage = this.projects.length === 0 ? this.translate('search.noResults') : '';
       this.searchResults.emit(this.projects);
       this.showResults = true;
     } catch (error: any) {
       console.error('Error searching:', error);
-      this.errorMessage = 'Erreur lors de la recherche';
+      this.errorMessage = this.translate('search.error');
       this.projects = [];
       this.searchResults.emit([]);
     } finally {

@@ -1,0 +1,10 @@
+<div class="language-switch-container">
+  <button 
+    class="language-switch" 
+    (click)="toggleLanguage()"
+    [attr.aria-label]="isEnglish ? 'Switch to French' : 'Switch to English'"
+    title="{{ isEnglish ? 'Passer en français' : 'Switch to English' }}">
+    <span class="language-flag">{{ isEnglish ? '🇬🇧' : '🇫🇷' }}</span>
+    <span class="language-code">{{ currentLanguage.toUpperCase() }}</span>
+  </button>
+</div>

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ProjectService } from '../../../services/project.service';
+import { TranslationService } from '../../../services/translation.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CarouselComponent } from "../carousel/carousel.component";
@@ -17,7 +19,7 @@ import { ThemeService } from '../../../services/theme.service';
   templateUrl: './game-details.component.html',
   styleUrls: ['./game-details.component.css']
 })
-export class GameDetailsComponent implements OnInit {
+export class GameDetailsComponent implements OnInit, OnDestroy {
   project: any = {};
   images: string[] = [];
   projectId!: string;
@@ -40,6 +42,7 @@ export class GameDetailsComponent implements OnInit {
   errorMessage: string = '';
   showDeleteConfirm: boolean = false;
   commentToDelete: number | null = null;
+  private languageSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,8 +50,19 @@ export class GameDetailsComponent implements OnInit {
     private fileService: FileService,
     private libraryService: LibraryService,
     private commentService: CommentService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private translationService: TranslationService
   ) {}
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
+  }
 
   ngOnInit(): void {
     const savedEmail = localStorage.getItem('jamesstudio_comment_email');
@@ -109,7 +123,6 @@ export class GameDetailsComponent implements OnInit {
         ? imageData.map((img: any) => typeof img === 'string' ? img : img.url || img)
         : [];
       console.log('Images/Videos chargées:', this.images);
-      // Log pour vérifier les types de fichiers
       this.images.forEach((url: string, index: number) => {
         const isVideo = url.toLowerCase().match(/\.(mp4|webm|ogg|mov|avi|mkv)(\?|#|$)/i);
         console.log(`Media ${index + 1}: ${url} - Type: ${isVideo ? 'VIDEO' : 'IMAGE'}`);
@@ -150,17 +163,17 @@ export class GameDetailsComponent implements OnInit {
 
   async submitComment(): Promise<void> {
     if (!this.commentEmail || !this.commentEmail.trim()) {
-      this.errorMessage = 'Veuillez renseigner votre email';
+      this.errorMessage = this.translate('comments.emailHint');
       return;
     }
 
     if (!this.isValidEmail(this.commentEmail)) {
-      this.errorMessage = 'Email invalide';
+      this.errorMessage = this.translate('common.error');
       return;
     }
 
     if (this.commentRating === 0 && !this.commentContent.trim()) {
-      this.errorMessage = 'Veuillez ajouter une note ou un commentaire';
+      this.errorMessage = this.translate('comments.commentPlaceholder');
       return;
     }
 
@@ -218,7 +231,7 @@ export class GameDetailsComponent implements OnInit {
 
   requestDeleteComment(commentId: number): void {
     if (!this.userEmail) {
-      this.errorMessage = 'Veuillez renseigner votre email pour supprimer votre commentaire';
+      this.errorMessage = this.translate('comments.emailHint');
       return;
     }
     this.commentToDelete = commentId;

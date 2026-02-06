@@ -1,10 +1,9 @@
 <div class="contact-container">
   <div class="contact-header">
-    <h1>Contact & Settings</h1>
-    <p class="subtitle">Manage your settings and sign out</p>
+    <h1>{{ translate('contact.title') }}</h1>
+    <p class="subtitle">{{ translate('contact.subtitle') }}</p>
   </div>
 
-  <!-- Success and error messages -->
   <div class="messages-container" *ngIf="successMessage || errorMessage">
     <div class="message success-message" *ngIf="successMessage">
       <i class="fas fa-check-circle"></i>
@@ -23,15 +22,14 @@
   </div>
 
   <div class="contact-content">
-    <!-- Contact Section -->
     <div class="section contact-section">
       <div class="section-header">
         <i class="fas fa-envelope"></i>
-        <h2>Contact Me</h2>
+        <h2>{{ translate('contact.contactMe') }}</h2>
       </div>
       <div class="section-content">
         <p class="section-description">
-          Feel free to contact me with any questions, collaboration requests, or professional opportunities.
+          {{ translate('contact.description') }}
         </p>
         <div class="contact-details">
           <ul>
@@ -52,28 +50,26 @@
       </div>
     </div>
 
-    <!-- User Section -->
     <div class="section user-section">
       <div class="section-header">
         <i class="fas fa-user"></i>
-        <h2>My Account</h2>
+        <h2>{{ translate('contact.myAccount') }}</h2>
       </div>
       <div class="section-content">
         <div *ngIf="currentUserEmail" class="user-info">
-          <p><strong>Registered email:</strong> {{ currentUserEmail }}</p>
-          <p class="info-text">Your theme preferences are saved for this email.</p>
+          <p><strong>{{ translate('contact.registeredEmail') }}</strong> {{ currentUserEmail }}</p>
+          <p class="info-text">{{ translate('contact.themeSaved') }}</p>
         </div>
         <div *ngIf="!currentUserEmail && !showEmailInput" class="user-info">
-          <p>To save your theme preferences, please enter your email address.</p>
+          <p>{{ translate('contact.emailHint') }}</p>
           <button class="set-email-button" (click)="openEmailInput()">
             <i class="fas fa-envelope"></i>
-            <span>Set my email</span>
+            <span>{{ translate('contact.setEmail') }}</span>
           </button>
         </div>
 
-        <!-- Email form -->
         <div *ngIf="showEmailInput" class="email-input-form">
-          <label for="new-email">Email</label>
+          <label for="new-email">{{ translate('comments.email') }}</label>
           <input 
             type="email" 
             id="new-email"
@@ -84,32 +80,31 @@
           <div class="form-actions">
             <button class="save-button" (click)="saveEmail()">
               <i class="fas fa-check"></i>
-              Save
+              {{ translate('contact.save') }}
             </button>
             <button class="cancel-button" (click)="cancelEmailInput()">
               <i class="fas fa-times"></i>
-              Cancel
+              {{ translate('contact.cancel') }}
             </button>
           </div>
         </div>
         <div *ngIf="isLoggedIn" class="logout-section">
-          <p class="admin-info">You are logged in as an administrator.</p>
+          <p class="admin-info">{{ translate('contact.loggedIn') }}</p>
           <button class="logout-button" (click)="logout()" *ngIf="!showLogoutConfirm">
             <i class="fas fa-power-off"></i>
-            <span>Sign out</span>
+            <span>{{ translate('contact.signOut') }}</span>
           </button>
           
-          <!-- Logout confirmation -->
           <div *ngIf="showLogoutConfirm" class="confirmation-box">
-            <p>Are you sure you want to sign out?</p>
+            <p>{{ translate('contact.signOutConfirm') }}</p>
             <div class="confirmation-actions">
               <button class="confirm-button" (click)="confirmLogout()">
                 <i class="fas fa-check"></i>
-                Yes
+                {{ translate('common.yes') }}
               </button>
               <button class="cancel-button" (click)="cancelLogout()">
                 <i class="fas fa-times"></i>
-                No
+                {{ translate('common.no') }}
               </button>
             </div>
           </div>
@@ -117,26 +112,24 @@
       </div>
     </div>
 
-    <!-- Theme Section -->
     <div class="section theme-section">
       <div class="section-header">
         <i class="fas fa-palette"></i>
-        <h2>Theme Personalization</h2>
+        <h2>{{ translate('contact.themePersonalization') }}</h2>
       </div>
       <div class="section-content">
         <p class="section-description">
-          Customize the look of the site to your preferences. Your choices are saved only for your email.
+          {{ translate('contact.themeDescription') }}
         </p>
         <div *ngIf="!currentUserEmail" class="warning-box">
           <i class="fas fa-exclamation-triangle"></i>
-          <p>To save your preferences, first set your email address in the "My Account" section.</p>
+          <p>{{ translate('contact.warningEmail') }}</p>
         </div>
 
-        <!-- Accent color picker -->
         <div class="color-picker-group">
           <label class="color-label">
             <i class="fas fa-highlighter"></i>
-            Accent color
+            {{ translate('contact.accentColor') }}
           </label>
           <div class="color-input-wrapper">
             <input 
@@ -155,39 +148,36 @@
           </div>
         </div>
 
-        <!-- Reset button and Preview on same line -->
         <div class="theme-actions">
           <div class="theme-actions-row">
             <button class="reset-button" (click)="resetTheme()" *ngIf="!showResetConfirm">
               <i class="fas fa-undo"></i>
-              <span>Reset to default</span>
+              <span>{{ translate('contact.resetTheme') }}</span>
             </button>
             
-            <!-- Reset confirmation -->
             <div *ngIf="showResetConfirm" class="confirmation-box">
-              <p>Do you want to reset the theme to default values (black and white)?</p>
+              <p>{{ translate('contact.resetConfirm') }}</p>
               <div class="confirmation-actions">
                 <button class="confirm-button" (click)="confirmResetTheme()">
                   <i class="fas fa-check"></i>
-                  Yes
+                  {{ translate('common.yes') }}
                 </button>
                 <button class="cancel-button" (click)="cancelResetTheme()">
                   <i class="fas fa-times"></i>
-                  No
+                  {{ translate('common.no') }}
                 </button>
               </div>
             </div>
 
-            <!-- Theme preview -->
             <div class="theme-preview-inline">
-              <h3>Preview</h3>
+              <h3>{{ translate('contact.preview') }}</h3>
               <div class="preview-box" [style.background-color]="currentTheme.background">
                 <div class="preview-accent" [style.color]="currentTheme.accent">
                   <i class="fas fa-star"></i>
-                  <span>Accent text</span>
+                  <span>{{ translate('contact.accentText') }}</span>
                 </div>
                 <div class="preview-button" [style.background-color]="currentTheme.accent" [style.color]="currentTheme.background">
-                  Button
+                  {{ translate('gameDetails.button') }}
                 </div>
               </div>
             </div>

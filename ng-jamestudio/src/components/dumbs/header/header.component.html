@@ -1,41 +1,40 @@
 <nav class="navbar navbar-mainbg">
     <div class="navbar-container">
-        <!-- Logo à gauche -->
         <a class="navbar-logo" routerLink="/"><img src="/Logo White.png" alt="Logo" width="200px"></a>
         
-        <!-- Menu au centre -->
         <div class="navbar-menu" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
                 <li class="nav-item" [class.active]="isActiveRoute('/')">
-                    <a class="nav-link" routerLink="/" (click)="onNavClick($event)"><i class="fas fa-home"></i>Home</a>
+                    <a class="nav-link" routerLink="/" (click)="onNavClick($event)"><i class="fas fa-home"></i>{{ translate('nav.home') }}</a>
                 </li>
                 <li class="nav-item" [class.active]="isActiveRoute('/all-projects')">
-                    <a class="nav-link" routerLink="/all-projects" (click)="onNavClick($event)"><i class="fas fa-project-diagram"></i>All Projects</a>
+                    <a class="nav-link" routerLink="/all-projects" (click)="onNavClick($event)"><i class="fas fa-project-diagram"></i>{{ translate('nav.allProjects') }}</a>
                 </li>
                 <li class="nav-item" *ngIf="isLoggedIn" [class.active]="isActiveRoute('/project')">
-                    <a class="nav-link" routerLink="/project" (click)="onNavClick($event)"><i class="fas fa-plus-circle"></i>Add Project</a>
+                    <a class="nav-link" routerLink="/project" (click)="onNavClick($event)"><i class="fas fa-plus-circle"></i>{{ translate('nav.addProject') }}</a>
                 </li>
                 <li class="nav-item" *ngIf="isLoggedIn" [class.active]="isActiveRoute('/developer')">
-                    <a class="nav-link" routerLink="/developer" (click)="onNavClick($event)"><i class="fas fa-folder-open"></i>My Projects</a>
+                    <a class="nav-link" routerLink="/developer" (click)="onNavClick($event)"><i class="fas fa-folder-open"></i>{{ translate('nav.myProjects') }}</a>
                 </li>
                 <li class="nav-item" *ngIf="!isLoggedIn" [class.active]="isActiveRoute('/admin-login')">
-                    <a class="nav-link" routerLink="/admin-login" (click)="onNavClick($event)"><i class="fas fa-user-shield"></i>Admin</a>
+                    <a class="nav-link" routerLink="/admin-login" (click)="onNavClick($event)"><i class="fas fa-user-shield"></i>{{ translate('nav.admin') }}</a>
                 </li>
                 <li class="nav-item" [class.active]="isActiveRoute('/contact-us')">
-                    <a class="nav-link" routerLink="/contact-us" (click)="onNavClick($event)"><i class="fas fa-cog"></i>Contact & Settings</a>
+                    <a class="nav-link" routerLink="/contact-us" (click)="onNavClick($event)"><i class="fas fa-cog"></i>{{ translate('nav.contact') }}</a>
                 </li>
               
             </ul>
         </div>
         
-        <!-- Searchbar à droite -->
-        <div class="navbar-searchbar">
-            <app-searchbar></app-searchbar>
+        <div class="navbar-right-section">
+            <app-language-switch></app-language-switch>
+            <div class="navbar-searchbar">
+                <app-searchbar></app-searchbar>
+            </div>
         </div>
         
-        <!-- Menu burger pour mobile -->
-        <button class="navbar-toggler" type="button" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" (click)="toggleMobileMenu()" aria-label="Basculer la navigation">
             <i class="fas fa-bars"></i>
         </button>
     </div>

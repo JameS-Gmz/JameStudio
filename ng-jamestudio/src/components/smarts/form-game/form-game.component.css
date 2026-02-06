@@ -32,19 +32,19 @@
 }
 
 .section-label {
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: var(--spacing-xs);
 }
 
 .required {
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
   font-size: 0.9rem;
 }
 
 .form-hint {
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
   font-size: 0.85rem;
   font-style: italic;
   margin-top: -var(--spacing-xs);
@@ -150,7 +150,7 @@
   background: var(--bg-primary);
   border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
   font-size: 1rem;
   font-family: var(--font-primary);
   transition: all var(--transition-normal);
@@ -166,7 +166,7 @@
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
 }
 
 .form-textarea {
@@ -189,7 +189,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  color: #fff; /* blanc pour les textes secondaires */
+  color: #fff;
   font-size: 0.95rem;
   font-weight: 500;
 }

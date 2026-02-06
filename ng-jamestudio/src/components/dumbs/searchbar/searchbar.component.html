@@ -4,7 +4,7 @@
       class="search"
       type="text"
       [(ngModel)]="searchQuery"
-      placeholder="Search projects..."
+      [placeholder]="translate('search.placeholder')"
       (input)="onInput()"
       [disabled]="isLoading" />
     <button class="search-btn" (click)="reset()">

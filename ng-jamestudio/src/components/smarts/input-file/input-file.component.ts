@@ -11,8 +11,8 @@ import { APP_CONSTANTS } from '../../../constants/app.constants';
   styleUrl: './input-file.component.css'
 })
 export class InputFileComponent {
-  @Input() text = "Upload Image";
-  @Input() description = "Click or drag and drop your image here";
+  @Input() text = "Télécharger une image";
+  @Input() description = "Cliquez ou glissez-déposez votre image ici";
   @Input() multiple: boolean = false;
 
   selectedFiles: File[] = [];

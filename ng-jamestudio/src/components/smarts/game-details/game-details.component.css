@@ -1,6 +1,3 @@
-/* ============================================
-   CONTAINER PRINCIPAL
-   ============================================ */
 .project-details-page {
     max-width: 1400px;
     margin: 0 auto;
@@ -30,9 +27,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* ============================================
-   EN-TÊTE DU PROJET
-   ============================================ */
 .project-header {
     margin-bottom: var(--spacing-xl);
     text-transform: uppercase;
@@ -53,9 +47,6 @@
     margin: 0 auto;
 }
 
-/* ============================================
-   CONTENU PRINCIPAL (2 COLONNES)
-   ============================================ */
 .project-main-content {
     display: grid;
     grid-template-columns: 1fr 350px;
@@ -63,14 +54,12 @@
     margin-bottom: var(--spacing-xl);
 }
 
-/* Colonne principale */
 .project-main-column {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
 }
 
-/* Colonne latérale */
 .project-sidebar {
     display: flex;
     flex-direction: column;
@@ -82,7 +71,6 @@
     overflow-y: auto;
 }
 
-/* Sections génériques */
 .project-section {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -117,9 +105,6 @@
     border-bottom: 1px solid var(--border-color);
 }
 
-/* ============================================
-   SECTION DESCRIPTION
-   ============================================ */
 .description-content {
     color: var(--text-primary);
     line-height: 1.8;
@@ -131,9 +116,6 @@
     white-space: pre-wrap;
 }
 
-/* ============================================
-   SECTION TECHNOLOGIES
-   ============================================ */
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
@@ -159,9 +141,6 @@
     box-shadow: var(--shadow-glow);
 }
 
-/* ============================================
-   SECTION LIENS
-   ============================================ */
 .project-links {
     display: flex;
     flex-direction: column;
@@ -203,9 +182,6 @@
     border-color: var(--accent);
 }
 
-/* ============================================
-   SIDEBAR - NOTE MOYENNE
-   ============================================ */
 .rating-display {
     text-align: center;
     padding: var(--spacing-md);
@@ -231,9 +207,6 @@
     margin-top: var(--spacing-xs);
 }
 
-/* ============================================
-   SIDEBAR - ACTIONS
-   ============================================ */
 .action-button {
     width: 100%;
     display: flex;
@@ -284,9 +257,6 @@
     animation: spin 0.8s linear infinite;
 }
 
-/* ============================================
-   SIDEBAR - MÉTADONNÉES
-   ============================================ */
 .metadata-list {
     display: flex;
     flex-direction: column;
@@ -317,9 +287,6 @@
     text-align: right;
 }
 
-/* ============================================
-   SECTION COMMENTAIRES
-   ============================================ */
 .comments-section {
     display: flex;
     flex-direction: column;
@@ -359,7 +326,6 @@
     color: #ffffff;
 }
 
-/* Liste des commentaires */
 .comments-list {
     display: flex;
     flex-direction: column;
@@ -469,9 +435,6 @@
     font-size: 1rem;
 }
 
-/* ============================================
-   FORMULAIRE DE COMMENTAIRE
-   ============================================ */
 .comment-form-section {
     margin-top: var(--spacing-lg);
 }
@@ -657,7 +620,6 @@
     transform: none;
 }
 
-/* Confirmation de suppression */
 .delete-confirmation {
     padding: var(--spacing-md);
     background: rgba(255, 107, 107, 0.1);
@@ -718,9 +680,6 @@
     cursor: not-allowed;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 1024px) {
     .project-main-content {
         grid-template-columns: 1fr;

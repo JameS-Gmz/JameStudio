@@ -149,14 +149,13 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 2;
-  pointer-events: none; /* Permettre l'interaction avec les contrôles vidéo */
+  pointer-events: none;
 }
 
 .preview-item:hover .file-overlay {
   opacity: 1;
 }
 
-/* Pour les vidéos, permettre l'interaction avec les contrôles */
 .preview-item:hover video {
   z-index: 1;
 }

@@ -51,7 +51,6 @@ export class RatingComponentComponent implements ControlValueAccessor {
     return '';
   }
 
-  // ControlValueAccessor implementation
   writeValue(value: number): void {
     if (value !== undefined && value !== null) {
       this.rating = value;

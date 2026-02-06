@@ -34,7 +34,6 @@ h1 {
     padding: var(--spacing-xl);
 }
 
-/* Animation pour le chargement */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -46,7 +45,6 @@ h1 {
     }
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
     .games-container,
     .games-container > div {

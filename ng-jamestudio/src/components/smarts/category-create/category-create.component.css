@@ -88,7 +88,6 @@ textarea.input-field {
 	resize: vertical;
 }
   
-/* Responsive Design */
   @media (max-width: 1600px) {
 	.genre, .tags {
 		grid-template-columns: repeat(4, 1fr);

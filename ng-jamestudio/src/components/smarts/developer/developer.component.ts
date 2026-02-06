@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../../services/project.service';
 import { UserService } from '../../../services/user.service';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   selector: 'app-developer',
@@ -11,7 +13,7 @@ import { UserService } from '../../../services/user.service';
   templateUrl: './developer.component.html',
   styleUrl: './developer.component.css'
 })
-export class DeveloperComponent implements OnInit {
+export class DeveloperComponent implements OnInit, OnDestroy {
   projects: any[] = [];
   loading: boolean = true;
   error: string | null = null;
@@ -19,11 +21,23 @@ export class DeveloperComponent implements OnInit {
   isEditing: boolean = false;
   showDeleteConfirm: boolean = false;
   projectToDelete: number | null = null;
+  private languageSubscription?: Subscription;
 
   constructor(
     private projectService: ProjectService,
-    private userService: UserService
+    private userService: UserService,
+    private translationService: TranslationService
   ) {}
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
+  }
 
   ngOnInit(): void {
     this.loadDeveloperProjects();
@@ -36,13 +50,13 @@ export class DeveloperComponent implements OnInit {
       const developerId = await this.userService.getCurrentDeveloperId();
       
       if (!developerId) {
-        throw new Error('Developer ID not found');
+        throw new Error('ID développeur non trouvé');
       }
 
       this.projects = await this.projectService.getProjectsByUserId(developerId);
     } catch (error) {
-      console.error('Error:', error);
-      this.error = error instanceof Error ? error.message : 'Error loading projects';
+      console.error('Erreur:', error);
+      this.error = error instanceof Error ? error.message : 'Erreur lors du chargement des projets';
     } finally {
       this.loading = false;
     }
@@ -94,8 +108,8 @@ export class DeveloperComponent implements OnInit {
 
       this.cancelEdit();
     } catch (error) {
-      console.error('Error updating project:', error);
-      this.error = 'Error updating project';
+      console.error('Erreur lors de la mise à jour du projet:', error);
+      this.error = 'Erreur lors de la mise à jour du projet';
     }
   }
 
@@ -121,8 +135,8 @@ export class DeveloperComponent implements OnInit {
         this.projectToDelete = null;
       })
       .catch(error => {
-        console.error('Error deleting:', error);
-        this.error = 'Error deleting project';
+        console.error('Erreur lors de la suppression:', error);
+        this.error = 'Erreur lors de la suppression du projet';
         this.showDeleteConfirm = false;
         this.projectToDelete = null;
       });

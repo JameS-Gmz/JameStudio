@@ -99,13 +99,11 @@ export class ProjectService {
   }
 
   async addProjectToLibrary(ProjectId: number, UserId: number): Promise<any> {
-    // La bibliothèque utilisateur reste en localStorage car elle est personnelle
     this.localStorageService.addProjectToLibrary(ProjectId, UserId);
     return { message: 'Projet ajouté à la bibliothèque avec succès' };
   }
 
   async getProjectLibrary(userId: number): Promise<any> {
-    // La bibliothèque utilisateur reste en localStorage car elle est personnelle
     return this.localStorageService.getProjectLibrary(userId);
   }
 }

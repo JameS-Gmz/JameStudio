@@ -22,7 +22,7 @@ export class ThemeService {
   private getDefaultTheme(): ThemeColors {
     return {
       background: '#1F1F1F',
-      accent: '#ec6436'
+      accent: '#795c53'
     };
   }
 
@@ -125,6 +125,7 @@ export class ThemeService {
     root.style.setProperty('--bg-secondary', this.adjustBrightness(theme.background, 2));
     root.style.setProperty('--bg-card', this.adjustBrightness(theme.background, 10));
     root.style.setProperty('--bg-card-hover', this.adjustBrightness(theme.background, 16));
+    root.style.setProperty('--bg-header-footer', this.adjustBrightness(theme.background, -5));
     document.body.style.backgroundColor = theme.background;
     
     root.style.setProperty('--accent', theme.accent);
@@ -152,13 +153,13 @@ export class ThemeService {
     
     const isDarkBackground = this.isDarkColor(theme.background);
     if (isDarkBackground) {
-      root.style.setProperty('--text-primary', theme.accent);
-      root.style.setProperty('--text-secondary', this.hexToRgba(theme.accent, 0.8));
-      root.style.setProperty('--text-muted', this.hexToRgba(theme.accent, 0.5));
+      root.style.setProperty('--text-primary', '#ffffff');
+      root.style.setProperty('--text-secondary', 'rgba(255, 255, 255, 0.8)');
+      root.style.setProperty('--text-muted', 'rgba(255, 255, 255, 0.5)');
     } else {
-      root.style.setProperty('--text-primary', theme.background);
-      root.style.setProperty('--text-secondary', this.hexToRgba(theme.background, 0.8));
-      root.style.setProperty('--text-muted', this.hexToRgba(theme.background, 0.5));
+      root.style.setProperty('--text-primary', '#000000');
+      root.style.setProperty('--text-secondary', 'rgba(0, 0, 0, 0.8)');
+      root.style.setProperty('--text-muted', 'rgba(0, 0, 0, 0.5)');
     }
   }
 

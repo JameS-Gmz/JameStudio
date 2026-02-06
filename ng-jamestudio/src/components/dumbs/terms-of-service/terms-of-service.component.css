@@ -116,7 +116,6 @@
   border-bottom-color: var(--accent-hover);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .tos-container {
     padding: var(--spacing-lg) var(--spacing-md);

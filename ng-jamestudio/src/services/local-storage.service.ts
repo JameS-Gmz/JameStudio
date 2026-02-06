@@ -14,24 +14,19 @@ export class LocalStorageService {
   }
 
   private initializeStorage(): void {
-    // Initialiser les projets si la clé n'existe pas
     if (!localStorage.getItem(this.PROJECTS_KEY)) {
       localStorage.setItem(this.PROJECTS_KEY, JSON.stringify([]));
     }
     
-    // Initialiser les bibliothèques si la clé n'existe pas
     if (!localStorage.getItem(this.LIBRARIES_KEY)) {
       localStorage.setItem(this.LIBRARIES_KEY, JSON.stringify({}));
     }
 
-    // Calculer le prochain ID disponible
     const projects = this.getAllProjects();
     if (projects.length > 0) {
       this.nextProjectId = Math.max(...projects.map(p => p.id)) + 1;
     }
   }
-
-  // ========== GESTION DES PROJETS ==========
 
   getAllProjects(): Project[] {
     const data = localStorage.getItem(this.PROJECTS_KEY);
@@ -102,7 +97,6 @@ export class LocalStorageService {
 
     localStorage.setItem(this.PROJECTS_KEY, JSON.stringify(filtered));
     
-    // Supprimer aussi de toutes les bibliothèques
     this.removeProjectFromAllLibraries(id);
     
     return true;
@@ -148,7 +142,6 @@ export class LocalStorageService {
     return projects.filter(p => p.UserId === userId);
   }
 
-  // ========== GESTION DES BIBLIOTHÈQUES ==========
 
   private getLibraries(): { [userId: number]: number[] } {
     const data = localStorage.getItem(this.LIBRARIES_KEY);
@@ -195,7 +188,6 @@ export class LocalStorageService {
     this.saveLibraries(libraries);
   }
 
-  // ========== GESTION DES IMAGES ==========
 
   async fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {

@@ -1,17 +1,17 @@
 <div class="admin-login-container">
   <div class="login-card">
-    <h1>Accès Admin</h1>
-    <p class="subtitle">Connectez-vous pour ajouter ou modifier des projets</p>
+    <h1>{{ translate('admin.title') }}</h1>
+    <p class="subtitle">{{ translate('admin.subtitle') }}</p>
     
     <form (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="password">Mot de passe</label>
+        <label for="password">{{ translate('admin.password') }}</label>
         <input
           type="password"
           id="password"
           [(ngModel)]="password"
           name="password"
-          placeholder="Entrez le mot de passe"
+          [placeholder]="translate('admin.passwordPlaceholder')"
           class="form-input"
           [disabled]="isLoading"
           autocomplete="off"
@@ -23,8 +23,8 @@
       </div>
 
       <button type="submit" class="login-button" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Se connecter</span>
-        <span *ngIf="isLoading">Connexion...</span>
+        <span *ngIf="!isLoading">{{ translate('admin.login') }}</span>
+        <span *ngIf="isLoading">{{ translate('admin.loggingIn') }}</span>
       </button>
     </form>
   </div>

@@ -21,46 +21,39 @@ export class CarouselComponent implements OnInit, OnDestroy {
   defaultImage: string = APP_CONSTANTS.DEFAULTS.PLACEHOLDER_IMAGE;
   private autoSlideInterval: ReturnType<typeof setInterval> | null = null;
 
-  constructor(private logger: LoggerService) {}
+  constructor(private logger: LoggerService) {  }
 
-  // Vérifier si l'URL est une vidéo
   isVideo(url: string): boolean {
     if (!url) return false;
     const videoExtensions = APP_CONSTANTS.FILE_UPLOAD.ALLOWED_EXTENSIONS.VIDEOS;
     const lowerUrl = url.toLowerCase();
-    // Vérifier les extensions de fichier
     const hasVideoExtension = videoExtensions.some(ext => {
-      // Vérifier si l'extension est à la fin de l'URL ou dans le chemin
       return lowerUrl.includes(ext) && (
         lowerUrl.endsWith(ext) || 
         lowerUrl.includes(ext + '?') || 
         lowerUrl.includes(ext + '#')
       );
     });
-    // Vérifier aussi le type MIME dans l'URL (pour les data URLs)
     const hasVideoMimeType = lowerUrl.includes('video/') || lowerUrl.startsWith('data:video/');
     return hasVideoExtension || hasVideoMimeType;
   }
 
-  // Fonction pour passer à l'image/vidéo suivante
   nextSlide(): void {
     if (this.currentIndex < this.images.length - 1) {
       this.currentIndex++;
     } else {
-      this.currentIndex = 0; // Retour au début si on est à la fin
+      this.currentIndex = 0;
     }
   }
 
-  // Fonction pour revenir à l'image/vidéo précédente 
   prevSlide(): void {
     if (this.currentIndex > 0) {
       this.currentIndex--;
     } else {
-      this.currentIndex = this.images.length - 1; // Aller à la dernière image si on est au début
+      this.currentIndex = this.images.length - 1;
     }
   }
 
-  // Gérer les erreurs de chargement d'image
   handleImageError(event: Event): void {
     this.logger.warn('Erreur de chargement de l\'image');
     const target = event.target as HTMLImageElement;
@@ -69,19 +62,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Gérer les erreurs de chargement de vidéo
   handleVideoError(event: Event): void {
     this.logger.error('Erreur de chargement de la vidéo', {
       url: this.images[this.currentIndex],
       error: (event.target as HTMLVideoElement)?.error
     });
-    // Pour les vidéos, on peut passer à la suivante ou afficher un message
     if (this.images.length > 1) {
       this.nextSlide();
     }
   }
 
-  // Logs pour le débogage
   onVideoLoadStart(): void {
     this.logger.debug('Début du chargement vidéo', this.images[this.currentIndex]);
   }
@@ -90,10 +80,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.logger.debug('Métadonnées vidéo chargées', this.images[this.currentIndex]);
   }
 
-  // Démarrer le défilement automatique (seulement pour les images)
   ngOnInit() {
     this.autoSlideInterval = setInterval(() => {
-      // Ne pas changer automatiquement si c'est une vidéo en cours
       if (!this.isVideo(this.images[this.currentIndex])) {
         this.nextSlide();
       }

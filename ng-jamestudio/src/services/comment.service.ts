@@ -26,9 +26,8 @@ export interface CommentResponse {
 export class CommentService {
   private readonly API_URL = 'https://api.jamestudio.fr/api/comments';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {  }
 
-  // Get all comments for a project with statistics
   async getProjectComments(projectId: number): Promise<CommentResponse> {
     try {
       const response = await firstValueFrom(
@@ -39,7 +38,6 @@ export class CommentService {
         return { comments: [], averageRating: 0, totalComments: 0, totalRatings: 0 };
       }
       
-      // Convertir les dates string en Date objects
       const comments = response.comments.map(c => ({
         ...c,
         createdAt: new Date(c.createdAt),
@@ -56,7 +54,6 @@ export class CommentService {
     }
   }
 
-  // Get all comments for a project (Observable version)
   getProjectComments$(projectId: number): Observable<CommentResponse> {
     return this.http.get<CommentResponse>(`${this.API_URL}/project/${projectId}`).pipe(
       map(response => ({
@@ -70,7 +67,6 @@ export class CommentService {
     );
   }
 
-  // Create a new comment
   async createComment(
     projectId: number, 
     content: string, 
@@ -78,7 +74,6 @@ export class CommentService {
     email: string,
     authorName: string
   ): Promise<Comment> {
-    // Validation de l'email
     if (!this.isValidEmail(email)) {
       throw new Error('Email invalide');
     }
@@ -114,7 +109,6 @@ export class CommentService {
     }
   }
 
-  // Create a new comment (Observable version)
   createComment$(
     projectId: number, 
     content: string, 
@@ -146,7 +140,6 @@ export class CommentService {
     );
   }
 
-  // Update a comment (seulement si l'email correspond)
   async updateComment(
     commentId: number, 
     content: string, 
@@ -181,7 +174,6 @@ export class CommentService {
     }
   }
 
-  // Update a comment (Observable version)
   updateComment$(
     commentId: number, 
     content: string, 
@@ -205,7 +197,6 @@ export class CommentService {
     );
   }
 
-  // Delete a comment (seulement si l'email correspond)
   async deleteComment(commentId: number, email: string): Promise<void> {
     if (!this.isValidEmail(email)) {
       throw new Error('Email invalide');
@@ -223,7 +214,6 @@ export class CommentService {
     }
   }
 
-  // Delete a comment (Observable version)
   deleteComment$(commentId: number, email: string): Observable<void> {
     if (!this.isValidEmail(email)) {
       throw new Error('Email invalide');
@@ -234,7 +224,6 @@ export class CommentService {
     });
   }
 
-  // Vérifier si un email peut modifier un commentaire
   async canEditComment(commentId: number, email: string): Promise<boolean> {
     if (!this.isValidEmail(email)) return false;
 
@@ -251,7 +240,6 @@ export class CommentService {
     }
   }
 
-  // Obtenir le commentaire d'un utilisateur pour un projet (basé sur l'email)
   async getUserCommentForProject(projectId: number, email: string): Promise<Comment | null> {
     if (!this.isValidEmail(email)) return null;
 
@@ -272,7 +260,6 @@ export class CommentService {
     return emailRegex.test(email.trim());
   }
 
-  // Legacy method for backward compatibility
   async getGameComments(gameId: number): Promise<CommentResponse> {
     return this.getProjectComments(gameId);
   }

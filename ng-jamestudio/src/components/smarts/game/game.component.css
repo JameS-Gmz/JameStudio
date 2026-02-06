@@ -126,7 +126,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .add-project-container {
     padding: var(--spacing-md);

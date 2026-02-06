@@ -35,7 +35,6 @@ export class SimpleAuthService {
           return;
         }
       } catch (e) {
-        // Session invalide
       }
     }
     this.isAuthenticatedSubject.next(false);

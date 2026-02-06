@@ -1,7 +1,9 @@
-import { booleanAttribute, Component, ViewChild } from '@angular/core';
+import { booleanAttribute, Component, ViewChild, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { InputFileComponent } from "../input-file/input-file.component";
 import { FormBuilder, FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from '@angular/common';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   selector: 'app-form-game',
@@ -10,15 +12,28 @@ import { CommonModule } from '@angular/common';
   templateUrl: './form-game.component.html',
   styleUrl: './form-game.component.css'
 })
-export class FormGameComponent {
+export class FormGameComponent implements OnDestroy {
   @ViewChild('postGameForm') postGameForm!: NgForm;
   selectedFiles: File[] = [];
   previewImageUrls: string[] = [];
+  private languageSubscription?: Subscription;
   
   form = {
     title: '',
     description: '',
   };
+
+  constructor(private translationService: TranslationService) {}
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
+  }
 
   isValid(): boolean | null {
     return this.postGameForm ? this.postGameForm.valid : null;

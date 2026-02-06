@@ -1,12 +1,10 @@
 export const APP_CONSTANTS = {
-  // Storage keys
   STORAGE_KEYS: {
     PROJECTS: 'jamesstudio_projects',
     COMMENT_EMAIL: 'jamesstudio_comment_email',
     COMMENT_AUTHOR_NAME: 'jamesstudio_comment_author_name'
   },
 
-  // Default values
   DEFAULTS: {
     IMAGE: '/1.jpg',
     PLACEHOLDER_IMAGE: 'https://placehold.co/800x400/1D2437/FFFFFF?text=Image+non+disponible',
@@ -15,7 +13,6 @@ export const APP_CONSTANTS = {
     LANGUAGE_ID: 1
   },
 
-  // File upload
   FILE_UPLOAD: {
     MAX_SIZE: 100 * 1024 * 1024, // 100MB
     ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
@@ -26,7 +23,6 @@ export const APP_CONSTANTS = {
     }
   },
 
-  // Messages
   MESSAGES: {
     ERROR: {
       SERVER: 'Erreur serveur',
@@ -43,7 +39,6 @@ export const APP_CONSTANTS = {
     }
   },
 
-  // Carousel
   CAROUSEL: {
     AUTO_SLIDE_INTERVAL: 5000 // 5 secondes
   }

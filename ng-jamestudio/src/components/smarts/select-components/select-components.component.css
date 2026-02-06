@@ -34,7 +34,6 @@ select:hover {
 	scale: 1.02;
 }
 
-/* Styles de la scrollbar */
 select::-webkit-scrollbar {
 	width: 8px;
 }
@@ -76,8 +75,6 @@ select option:disabled {
 	pointer-events: none;
 }
 
-
-/* Styles pour la sélection multiple */
 select[multiple] {
 	height: auto;
 	min-height: 150px;
@@ -100,7 +97,6 @@ select[multiple] option:hover {
 	background-color: rgba(26, 104, 255, 0.1);
 }
 
-/* Masquer la flèche pour les plateformes et contrôleurs */
 .select-container:has(select[multiple]) .select::after {
 	display: none;
 }
@@ -118,7 +114,6 @@ select[multiple] option:hover {
 	
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
 	.select {
 		min-width: 100%;

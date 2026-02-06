@@ -24,9 +24,7 @@ export class ApiService {
     private apiConfig: ApiConfigService,
     private localStorageFallback: LocalStorageFallbackService,
     private logger: LoggerService
-  ) {}
-
-  // ========== GESTION DES PROJETS ==========
+  ) {  }
 
   getAllProjects(): Observable<Project[]> {
     if (!this.useApi) {
@@ -37,7 +35,6 @@ export class ApiService {
       .pipe(
         catchError(error => {
           this.logger.error('Erreur lors de la récupération des projets', error);
-          // Fallback vers localStorage en cas d'erreur
           return this.localStorageFallback.getAllProjects();
         })
       );
@@ -154,15 +151,12 @@ export class ApiService {
     ).pipe(
       catchError(error => {
         this.logger.warn(`Endpoint /api/projects/user/${userId} non disponible, fallback vers getAllProjects()`, error);
-        // Fallback: récupérer tous les projets et filtrer côté client
         return this.getAllProjects().pipe(
           map(projects => projects.filter(p => p.UserId === userId))
         );
       })
     );
   }
-
-  // ========== GESTION DES FICHIERS ==========
 
   uploadFile(file: File, projectId: number): Observable<FileUploadResponse> {
     if (!this.useApi) {

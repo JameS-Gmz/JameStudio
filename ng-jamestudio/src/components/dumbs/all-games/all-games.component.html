@@ -1,6 +1,6 @@
 <div class="games-container">
-  <h1>All Projects</h1>
-  <div class="loading" *ngIf="isLoading">Loading...</div>
+  <h1>{{ translate('projects.allProjects') }}</h1>
+  <div class="loading" *ngIf="isLoading">{{ translate('common.loading') }}</div>
   <div #container></div>
 
   <p>{{errorMessage}}</p>

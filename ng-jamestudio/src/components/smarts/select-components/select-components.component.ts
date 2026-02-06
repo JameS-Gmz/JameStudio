@@ -32,7 +32,6 @@ export class SelectComponentsComponent implements OnInit, OnChanges, AfterViewIn
       this.data = []; // Réinitialiser les données avant le chargement
       
       try {
-        // Normaliser le nom de la table (Controllers -> controllers, Platforms -> platforms, etc.)
         const normalizedTableName = this.tableName.toLowerCase();
         console.log(`🔄 [${this.tableName}] Chargement des données (normalisé: ${normalizedTableName})`);
         
@@ -61,12 +60,10 @@ export class SelectComponentsComponent implements OnInit, OnChanges, AfterViewIn
 
   async ngOnInit(): Promise<void> {
     console.log(`🚀 [${this.tableName}] ngOnInit appelé`);
-    // Ne pas charger ici car tableName peut ne pas être encore défini
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     console.log(`🔄 [${this.tableName}] ngOnChanges appelé:`, changes);
-    // Recharger les données si le tableName change ou est défini pour la première fois
     if (changes['tableName']) {
       this.dataLoaded = false; // Réinitialiser le flag
       if (this.tableName) {
@@ -78,7 +75,6 @@ export class SelectComponentsComponent implements OnInit, OnChanges, AfterViewIn
 
   async ngAfterViewInit(): Promise<void> {
     console.log(`👁️ [${this.tableName}] ngAfterViewInit appelé`);
-    // Si les données n'ont pas encore été chargées, les charger maintenant
     if (this.tableName && !this.dataLoaded) {
       console.log(`📝 [${this.tableName}] Chargement différé dans ngAfterViewInit...`);
       await this.loadData();
@@ -90,7 +86,6 @@ export class SelectComponentsComponent implements OnInit, OnChanges, AfterViewIn
     console.log('Event target selectedOptions:', event.target.selectedOptions);
 
     if (this.multiple) {
-      // Pour la sélection multiple, on récupère toutes les options sélectionnées
       const select = event.target;
       const selectedOptions = Array.from(select.selectedOptions)
         .filter((option: any) => option.value !== '') // Filtrer l'option par défaut
@@ -106,7 +101,6 @@ export class SelectComponentsComponent implements OnInit, OnChanges, AfterViewIn
       this.selectedValues = selectedOptions;
       this.selectionChange.emit(selectedOptions);
     } else {
-      // Pour la sélection simple, on émet juste l'ID (si ce n'est pas l'option par défaut)
       const selectedId = +event.target.value;
       if (selectedId && !isNaN(selectedId)) {
         console.log('Selected ID:', selectedId);

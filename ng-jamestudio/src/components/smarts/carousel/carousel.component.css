@@ -1,4 +1,3 @@
-/* Styles de base */
 .carousel-container {
   position: relative;
   width: 100%;
@@ -113,7 +112,6 @@ button.next:disabled {
   z-index: 3;
 }
 
-/* Responsive pour les écrans de 1024px (tablettes) */
 @media (max-width: 1024px) {
   .carousel-container {
     max-width: 800px;
@@ -132,7 +130,6 @@ button.next:disabled {
   }
 }
 
-/* Responsive pour les écrans de 768px (tablettes portrait) */
 @media (max-width: 768px) {
   .carousel-container {
     max-width: 100%;
@@ -192,7 +189,6 @@ button.next:disabled {
   }
 }
 
-/* Responsive pour les téléphones (max-width: 480px) */
 @media (max-width: 480px) {
   .carousel-container {
     max-width: 100%;
@@ -260,7 +256,6 @@ button.next:disabled {
   }
 }
 
-/* Responsive pour les très petits téléphones (max-width: 360px) */
 @media (max-width: 360px) {
   .carousel-slide {
     aspect-ratio: 16 / 9;

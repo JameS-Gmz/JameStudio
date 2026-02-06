@@ -1,18 +1,17 @@
 <div class="form-container">
-  <h2 class="form-title">Ajouter un Projet</h2>
+  <h2 class="form-title">{{ translate('form.addProject') }}</h2>
   
   <form #postGameForm="ngForm" class="project-form">
-    <!-- Section Images -->
     <div class="form-section image-section">
-      <label class="section-label">Images du Projet</label>
-      <p class="form-hint">Vous pouvez ajouter plusieurs images</p>
+      <label class="section-label">{{ translate('form.projectImages') }}</label>
+      <p class="form-hint">{{ translate('form.multipleImages') }}</p>
       <div class="image-upload-area" [class.has-images]="previewImageUrls.length > 0">
         <app-input-file 
           [multiple]="true"
           (filesSelected)="onFilesSelected($event)" 
           (fileSelected)="onFileSelected($event)"
-          text="Choisir des images"
-          description="Cliquez ou glissez-déposez pour ajouter des images">
+          [text]="translate('form.chooseImages')"
+          [description]="translate('form.dragDrop')">
         </app-input-file>
         
         <div *ngIf="previewImageUrls.length > 0" class="images-preview-grid">
@@ -26,17 +25,16 @@
       </div>
     </div>
 
-    <!-- Section Informations de base -->
     <div class="form-section">
       <label class="section-label" for="title">
-        Titre du Projet <span class="required">*</span>
+        {{ translate('form.title') }} <span class="required">{{ translate('form.required') }}</span>
       </label>
       <input 
         type="text" 
         id="title" 
         name="title" 
         class="form-input" 
-        placeholder="Ex: Mon Portfolio Web" 
+        [placeholder]="translate('form.titlePlaceholder')" 
         required 
         ngModel
       />
@@ -44,43 +42,41 @@
 
     <div class="form-section">
       <label class="section-label" for="description">
-        Description <span class="required">*</span>
+        {{ translate('form.description') }} <span class="required">{{ translate('form.required') }}</span>
       </label>
       <textarea 
         id="description" 
         name="description" 
         class="form-textarea" 
-        placeholder="Décrivez votre projet, ses fonctionnalités, les technologies utilisées..."
+        [placeholder]="translate('form.descriptionPlaceholder')"
         rows="6"
         required 
         ngModel
       ></textarea>
     </div>
 
-    <!-- Section Technologies -->
     <div class="form-section">
       <label class="section-label" for="technologies">
-        Technologies Utilisées
+        {{ translate('form.technologies') }}
       </label>
       <input 
         type="text" 
         id="technologies" 
         name="technologies" 
         class="form-input" 
-        placeholder="Ex: Angular, TypeScript, Node.js, MySQL (séparées par des virgules)"
+        [placeholder]="translate('form.technologiesPlaceholder')"
         ngModel
       />
-      <p class="form-hint">Séparez les technologies par des virgules</p>
+      <p class="form-hint">{{ translate('form.technologiesHint') }}</p>
     </div>
 
-    <!-- Section Liens -->
     <div class="form-section links-section">
-      <label class="section-label">Liens du Projet</label>
+      <label class="section-label">{{ translate('form.projectLinks') }}</label>
       
       <div class="link-input-group">
         <label class="link-label" for="github">
           <i class="fab fa-github"></i>
-          Lien GitHub
+          {{ translate('form.githubLink') }}
         </label>
         <input 
           type="url" 
@@ -95,7 +91,7 @@
       <div class="link-input-group">
         <label class="link-label" for="demo">
           <i class="fas fa-external-link-alt"></i>
-          Lien de Démo (optionnel)
+          {{ translate('form.demoLink') }}
         </label>
         <input 
           type="url" 

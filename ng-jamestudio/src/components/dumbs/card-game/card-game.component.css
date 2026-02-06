@@ -80,7 +80,7 @@ video {
 .video-overlay i {
   color: var(--accent);
   font-size: 1.5rem;
-  margin-left: 4px; /* Ajustement visuel pour centrer l'icône play */
+  margin-left: 4px;
 }
 
 .image:hover .video-overlay {
@@ -144,7 +144,6 @@ video {
   overflow-y: auto;
 }
 
-/* Style de la barre de défilement */
 .description textarea::-webkit-scrollbar {
   width: 8px;
 }
@@ -174,7 +173,6 @@ video {
   margin: 0;
 }
 
-/* Styles pour les technologies et liens */
 .technologies {
   width: 100%;
   margin: 8px 0;
@@ -203,7 +201,6 @@ video {
   transform: translateY(-2px);
 }
 
-/* Réduction automatique des technologies si nombreuses */
 .tech-tags.many-techs .tech-tag {
   font-size: 0.65rem;
   padding: 0.2rem 0.5rem;

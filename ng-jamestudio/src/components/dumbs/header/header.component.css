@@ -1,13 +1,14 @@
-/*----------Header Layout------------*/
 .navbar-mainbg{
-  background-color: black;
+  background-color: var(--bg-primary);
+  backdrop-filter: blur(10px);
   padding: 0;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
   overflow: visible;
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-container {
@@ -22,7 +23,6 @@
   position: relative;
 }
 
-/* Logo à gauche */
 .navbar-logo {
   color: var(--text-primary, #fff);
   text-decoration: none;
@@ -43,7 +43,6 @@
   max-width: 200px;
 }
 
-/* Menu au centre */
 .navbar-menu {
   flex: 1;
   display: flex;
@@ -75,7 +74,7 @@
 }
 
 .navbar-nav li a {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
   display: block;
@@ -100,7 +99,13 @@
   font-weight: 600;
 }
 
-/* Searchbar à droite */
+.navbar-right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .navbar-searchbar {
   flex-shrink: 0;
   display: flex;
@@ -112,7 +117,6 @@
   flex: 0 1 auto;
 }
 
-/* Menu burger pour mobile */
 .navbar-toggler {
   display: none;
   background: transparent;
@@ -182,7 +186,6 @@
   left: -25px;
 }
 
-/* Responsive - Menu Mobile s'affiche en dessous */
 @media (max-width: 991px) {
   .navbar-container {
     flex-wrap: wrap;
@@ -215,7 +218,6 @@
     position: relative;
   }
 
-  /* Menu mobile en-dessous du header */
   .navbar-menu {
     order: 4;
     width: 100vw;
@@ -228,14 +230,16 @@
     position: absolute;
     left: 0;
     top: 100%;
-    background: var(--bg-primary, #222);
+    background: var(--bg-primary);
+    backdrop-filter: blur(10px);
     z-index: 2000;
     min-width: 100vw;
-    max-height: 80vh; /* ADDED: Allow menu to show more height */
-    overflow-y: auto; /* ADDED: Scroll for overflow */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
+    border-bottom: 1px solid var(--border-color);
     animation: slideMenuDown 0.27s ease;
   }
   
@@ -323,8 +327,8 @@
     padding-top: 0;
     min-width: 100vw;
     font-size: 14px;
-    max-height: 80vh; /* ADDED: Allow menu to show more height */
-    overflow-y: auto; /* ADDED: Scroll for overflow */
+    max-height: 80vh;
+    overflow-y: auto;
   }
   
   .navbar-nav li a {
@@ -365,8 +369,8 @@
     padding: 0;
     margin: 0;
     top: 100%;
-    max-height: 80vh; /* ADDED: Allow menu to show more height */
-    overflow-y: auto; /* ADDED: Scroll for overflow */
+    max-height: 80vh;
+    overflow-y: auto;
   }
   
   .navbar-nav li a {

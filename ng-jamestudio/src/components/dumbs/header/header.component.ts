@@ -3,6 +3,8 @@ import { SearchbarComponent } from "../searchbar/searchbar.component";
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SimpleAuthService } from '../../../services/simple-auth.service';
+import { TranslationService } from '../../../services/translation.service';
+import { LanguageSwitchComponent } from '../language-switch/language-switch.component';
 import { Subscription, filter } from 'rxjs';
 
 @Component({
@@ -13,18 +15,20 @@ import { Subscription, filter } from 'rxjs';
     imports: [
         CommonModule, 
         SearchbarComponent, 
-        RouterModule
+        RouterModule,
+        LanguageSwitchComponent
     ]
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     isLoggedIn: boolean = false;
     isMobileMenuOpen: boolean = false;
+    currentLanguage: string = 'fr';
     private resizeListener: () => void = () => {}; 
     private clickListener: () => void = () => {};
     private routerSubscription: Subscription | null = null;
     private authSubscription: Subscription | null = null;
+    private languageSubscription: Subscription | null = null;
 
-    // Pour enregistrer les sections pour affichage mobile
     public mobileSections: Array<{
         label: string,
         icon: string,
@@ -45,24 +49,28 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         private renderer: Renderer2,
         private router: Router,
         private authService: SimpleAuthService,
+        private translationService: TranslationService,
         private cdr: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
-        // S'abonner aux changements d'authentification
         this.authSubscription = this.authService.isAuthenticated$.subscribe(loggedIn => {
             this.isLoggedIn = loggedIn;
             this.cdr.detectChanges();
             setTimeout(() => this.updateHoriSelector(), 100);
         });
 
-        // S'abonner aux changements de route
+        this.languageSubscription = this.translationService.currentLanguage$.subscribe(lang => {
+            this.currentLanguage = lang;
+            this.cdr.detectChanges();
+        });
+        this.currentLanguage = this.translationService.getCurrentLanguage();
+
         this.routerSubscription = this.router.events
             .pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
                 setTimeout(() => {
                     this.updateHoriSelector();
-                    // Fermer automatiquement le menu mobile lors d'un changement de route
                     if (this.isMobileMenuOpen) {
                         this.closeMobileMenu();
                     }
@@ -71,14 +79,11 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     ngAfterViewInit(): void {
-        // Initialiser le sélecteur après un court délai pour s'assurer que le DOM est prêt
         setTimeout(() => {
-            // Activer la route courante
             this.activateCurrentRoute();
             this.updateHoriSelector();
         }, 200);
 
-        // Écouteur sur resize
         this.resizeListener = this.renderer.listen('window', 'resize', () => {
             setTimeout(() => this.updateHoriSelector(), 100);
         });
@@ -90,36 +95,35 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         if (this.clickListener) this.clickListener();
         if (this.routerSubscription) this.routerSubscription.unsubscribe();
         if (this.authSubscription) this.authSubscription.unsubscribe();
+        if (this.languageSubscription) this.languageSubscription.unsubscribe();
     }
 
-    // Supporte le clic sur éléments de menu desktop ET mobile
+    translate(key: string): string {
+        return this.translationService.translate(key);
+    }
+
     onNavClick(event: Event): void {
         const target = event.currentTarget as HTMLElement;
         const navItem = target.closest('li.nav-item');
         const navItems = this.el.nativeElement.querySelectorAll('.navbar-menu ul li.nav-item');
         
-        // Retirer active de tous les items
         navItems.forEach((item: Element) => {
             item.classList.remove('active');
         });
         
-        // Ajouter active à l'item cliqué
         if (navItem) {
             navItem.classList.add('active');
         }
         
-        // Fermer le menu mobile si ouvert
         if (this.isMobileMenuOpen) {
             this.toggleMobileMenu();
         }
         
-        // Mettre à jour le sélecteur après un court délai pour laisser l'animation se faire
         setTimeout(() => {
             this.updateHoriSelector();
         }, 50);
     }
 
-    // Méthode appelée pour le clic dans le menu mobile (car il peut être dans un <div> séparé)
     onMobileSectionClick(sectionRoute: string) {
         if (this.router.url !== sectionRoute) {
             this.router.navigate([sectionRoute]);
@@ -127,7 +131,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         this.closeMobileMenu();
     }
 
-    // Ajoute un gestionnaire pour cliquer hors du menu mobile et le fermer
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
         if (this.isMobileMenuOpen) {
@@ -142,7 +145,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         return this.router.url === route || (route !== '/' && this.router.url.startsWith(route));
     }
 
-    // Sert à détecter si une section doit apparaître dans le menu mobile selon connexion
     shouldShowInMobile(section: { requiresLogin?: boolean, requiresLogout?: boolean }): boolean {
         if (section.requiresLogin && !this.isLoggedIn) return false;
         if (section.requiresLogout && this.isLoggedIn) return false;
@@ -159,7 +161,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         this.toggleMobileMenuDisplay();
     }
 
-    // Affiche ou masque le menu mobile (l'affichage/masquage CSS/DOM dépend du template)
     private toggleMobileMenuDisplay(): void {
         const navbarMenu = this.el.nativeElement.querySelector('.navbar-menu');
         if (navbarMenu) {
@@ -169,7 +170,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
                 navbarMenu.classList.remove('show');
             }
         }
-        // Affichage du menu mobile, DOM manipulé via le template Angular
     }
 
     private activateCurrentRoute(): void {
@@ -181,9 +181,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
             if (link) {
                 const routerLink = link.getAttribute('routerLink');
                 if (routerLink) {
-                    // Retirer active de tous
                     item.classList.remove('active');
-                    // Ajouter active si la route correspond
                     if (routerLink === currentUrl || (routerLink !== '/' && currentUrl.startsWith(routerLink))) {
                         item.classList.add('active');
                     }
@@ -191,7 +189,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
             }
         });
         
-        // Si aucun item n'est actif, activer le premier (Home)
         const hasActive = Array.from(navItems).some(item => item.classList.contains('active'));
         if (!hasActive && navItems.length > 0) {
             const firstItem = navItems[0] as HTMLElement;
@@ -202,7 +199,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     private updateHoriSelector(): void {
-        // Ne pas afficher le sélecteur sur mobile
         if (window.innerWidth <= 991) {
             return;
         }
@@ -214,7 +210,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         const horiSelector = nav.querySelector('.hori-selector') as HTMLElement;
         
         if (activeItem && horiSelector) {
-            // Obtenir la position relative au parent ul
             const ul = nav.querySelector('ul.navbar-nav') as HTMLElement;
             if (!ul) return;
             
@@ -224,14 +219,12 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
             const relativeTop = itemRect.top - ulRect.top;
             const relativeLeft = itemRect.left - ulRect.left;
             
-            // Appliquer les styles avec transition
             this.renderer.setStyle(horiSelector, 'top', `${relativeTop}px`);
             this.renderer.setStyle(horiSelector, 'left', `${relativeLeft}px`);
             this.renderer.setStyle(horiSelector, 'height', `${activeItem.offsetHeight}px`);
             this.renderer.setStyle(horiSelector, 'width', `${activeItem.offsetWidth}px`);
             this.renderer.setStyle(horiSelector, 'opacity', '1');
         } else if (horiSelector) {
-            // Cacher le sélecteur s'il n'y a pas d'item actif
             this.renderer.setStyle(horiSelector, 'opacity', '0');
         }
     }

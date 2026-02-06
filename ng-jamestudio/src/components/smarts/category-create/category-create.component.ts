@@ -59,7 +59,6 @@ export class CategoryCreateComponent implements OnInit {
     });
   }
 
-  // Méthode appelée lors de la sélection d'un élément dans SelectComponentsComponent
   onControllersSelected(selectedItems: any[]) {
     if (selectedItems && selectedItems.length > 0) {
       this.selectedControllerIds = selectedItems.map(item => item.id);

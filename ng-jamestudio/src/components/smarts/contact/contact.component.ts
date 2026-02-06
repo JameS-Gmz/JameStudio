@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SimpleAuthService } from '../../../services/simple-auth.service';
 import { ThemeService, ThemeColors } from '../../../services/theme.service';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   selector: 'app-contact',
@@ -19,7 +20,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   currentUserEmail: string | null = null;
   private themeSubscription?: Subscription;
 
-  // Messages et confirmations
   showLogoutConfirm: boolean = false;
   showResetConfirm: boolean = false;
   showEmailInput: boolean = false;
@@ -30,21 +30,23 @@ export class ContactComponent implements OnInit, OnDestroy {
   constructor(
     private authService: SimpleAuthService,
     private themeService: ThemeService,
-    private router: Router
+    private router: Router,
+    private translationService: TranslationService
   ) {}
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isAuthenticated();
     
-    // Récupérer l'email de l'utilisateur actuel (depuis les commentaires)
     this.currentUserEmail = localStorage.getItem('jamesstudio_comment_email');
     
-    // Charger le thème de l'utilisateur actuel
     if (this.currentUserEmail) {
       this.themeService.loadUserTheme(this.currentUserEmail);
     }
     
-    // S'abonner aux changements de thème
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.currentTheme = { ...theme };
     });
@@ -64,7 +66,6 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.isLoggedIn = false;
     this.showLogoutConfirm = false;
-    // Rediriger vers la page d'accueil après déconnexion
     setTimeout(() => {
       this.router.navigate(['/']);
     }, 100);
@@ -161,7 +162,6 @@ export class ContactComponent implements OnInit, OnDestroy {
     localStorage.setItem('jamesstudio_comment_email', normalizedEmail);
     this.currentUserEmail = normalizedEmail;
     
-    // Charger le thème de cet utilisateur s'il en a un
     this.themeService.loadUserTheme(normalizedEmail);
     
     this.showEmailInput = false;

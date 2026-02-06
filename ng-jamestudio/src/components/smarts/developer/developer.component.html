@@ -1,8 +1,8 @@
 <div class="developer-panel">
-  <h1>My Projects</h1>
+  <h1>{{ translate('developer.myProjects') }}</h1>
   
   <div *ngIf="loading" class="loading">
-    Loading...
+    {{ translate('developer.loading') }}
   </div>
 
   <div *ngIf="error" class="error">
@@ -14,79 +14,78 @@
       <div class="project-header">
         <h2>{{ project.title }}</h2>
         <div class="project-actions">
-          <button class="edit-btn" (click)="editProject(project)">Edit</button>
-          <button class="delete-btn" (click)="requestDeleteProject(project.id)" *ngIf="!showDeleteConfirm || projectToDelete !== project.id">Delete</button>
+          <button class="edit-btn" (click)="editProject(project)">{{ translate('developer.edit') }}</button>
+          <button class="delete-btn" (click)="requestDeleteProject(project.id)" *ngIf="!showDeleteConfirm || projectToDelete !== project.id">{{ translate('developer.delete') }}</button>
         </div>
         
-        <!-- Confirmation de suppression -->
         <div *ngIf="showDeleteConfirm && projectToDelete === project.id" class="delete-confirmation">
-          <p>Êtes-vous sûr de vouloir supprimer ce projet ?</p>
+          <p>{{ translate('developer.deleteConfirm') }}</p>
           <div class="confirmation-actions">
             <button class="confirm-button" (click)="confirmDeleteProject()">
               <i class="fas fa-check"></i>
-              Oui
+              {{ translate('developer.yes') }}
             </button>
             <button class="cancel-button" (click)="cancelDeleteProject()">
               <i class="fas fa-times"></i>
-              Non
+              {{ translate('developer.no') }}
             </button>
           </div>
         </div>
       </div>
       
       <div class="project-info">
-        <p><strong>Description:</strong> {{ project.description }}</p>
+        <p><strong>{{ translate('developer.description') }}</strong> {{ project.description }}</p>
         <div *ngIf="project.technologies && project.technologies.length > 0" class="technologies">
-          <strong>Technologies:</strong>
+          <strong>{{ translate('developer.technologies') }}</strong>
           <span *ngFor="let tech of project.technologies" class="tech-tag">{{tech}}</span>
         </div>
-        <p *ngIf="project.github"><strong>GitHub:</strong> <a [href]="project.github" target="_blank">{{ project.github }}</a></p>
-        <p *ngIf="project.demo"><strong>Demo:</strong> <a [href]="project.demo" target="_blank">{{ project.demo }}</a></p>
-        <p><strong>Last updated:</strong> {{ project.updatedAt | date:'mediumDate' }}</p>
+        <p *ngIf="project.github"><strong>{{ translate('projects.github') }} :</strong> <a [href]="project.github" target="_blank">{{ project.github }}</a></p>
+        <p *ngIf="project.demo"><strong>{{ translate('projects.demo') }} :</strong> <a [href]="project.demo" target="_blank">{{ project.demo }}</a></p>
+        <p><strong>{{ translate('projects.lastUpdate') }} :</strong> {{ project.updatedAt | date:'mediumDate' }}</p>
       </div>
     </div>
 
     <div *ngIf="projects.length === 0" class="no-projects">
-      You haven't created any projects yet.
+      {{ translate('developer.noProjects') }}
     </div>
 
     <div *ngIf="isEditing && selectedProject" class="edit-form" id="editForm">
-      <h2>Edit Project</h2>
+      <h2>{{ translate('developer.editProject') }}</h2>
       <form (ngSubmit)="updateProject()">
         <div class="form-group">
-          <label for="title">Title</label>
+          <label for="title">{{ translate('developer.title') }}</label>
           <input type="text" id="title" [(ngModel)]="selectedProject.title" name="title" required>
         </div>
 
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="description">{{ translate('form.description') }}</label>
           <textarea id="description" [(ngModel)]="selectedProject.description" name="description" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="technologies">Technologies (comma separated)</label>
+          <label for="technologies">{{ translate('developer.technologiesComma') }}</label>
           <input type="text" id="technologies" [(ngModel)]="selectedProject.technologies" name="technologies" 
                  [value]="selectedProject.technologies?.join(', ')">
         </div>
 
         <div class="form-group">
-          <label for="github">GitHub Link</label>
+          <label for="github">{{ translate('form.githubLink') }}</label>
           <input type="url" id="github" [(ngModel)]="selectedProject.github" name="github">
         </div>
 
         <div class="form-group">
-          <label for="demo">Demo Link</label>
+          <label for="demo">{{ translate('form.demoLink') }}</label>
           <input type="url" id="demo" [(ngModel)]="selectedProject.demo" name="demo">
         </div>
 
         <div class="form-group">
-          <label for="authorStudio">Author/Studio</label>
+          <label for="authorStudio">{{ translate('developer.authorStudio') }}</label>
           <input type="text" id="authorStudio" [(ngModel)]="selectedProject.authorStudio" name="authorStudio">
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-save">Save</button>
-          <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn-save">{{ translate('developer.save') }}</button>
+          <button type="button" class="btn-cancel" (click)="cancelEdit()">{{ translate('developer.cancel') }}</button>
         </div>
       </form>
     </div>
