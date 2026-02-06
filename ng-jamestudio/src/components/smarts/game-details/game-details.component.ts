@@ -51,7 +51,7 @@ export class GameDetailsComponent implements OnInit, OnDestroy {
     private libraryService: LibraryService,
     private commentService: CommentService,
     private themeService: ThemeService,
-    private translationService: TranslationService
+    public translationService: TranslationService
   ) {}
 
   ngOnDestroy(): void {

@@ -29,30 +29,60 @@
       <label class="section-label" for="title">
         {{ translate('form.title') }} <span class="required">{{ translate('form.required') }}</span>
       </label>
-      <input 
-        type="text" 
-        id="title" 
-        name="title" 
-        class="form-input" 
-        [placeholder]="translate('form.titlePlaceholder')" 
-        required 
-        ngModel
-      />
+      <div class="multilingual-input">
+        <div class="lang-input-group">
+          <label class="lang-label">{{ translate('form.titleFr') }}</label>
+          <input 
+            type="text" 
+            id="titleFr" 
+            name="titleFr" 
+            class="form-input" 
+            [placeholder]="translate('form.titlePlaceholder')" 
+            ngModel
+          />
+        </div>
+        <div class="lang-input-group">
+          <label class="lang-label">{{ translate('form.titleEn') }}</label>
+          <input 
+            type="text" 
+            id="titleEn" 
+            name="titleEn" 
+            class="form-input" 
+            [placeholder]="translate('form.titlePlaceholderEn')" 
+            ngModel
+          />
+        </div>
+      </div>
     </div>
 
     <div class="form-section">
       <label class="section-label" for="description">
         {{ translate('form.description') }} <span class="required">{{ translate('form.required') }}</span>
       </label>
-      <textarea 
-        id="description" 
-        name="description" 
-        class="form-textarea" 
-        [placeholder]="translate('form.descriptionPlaceholder')"
-        rows="6"
-        required 
-        ngModel
-      ></textarea>
+      <div class="multilingual-input">
+        <div class="lang-input-group">
+          <label class="lang-label">{{ translate('form.descriptionFr') }}</label>
+          <textarea 
+            id="descriptionFr" 
+            name="descriptionFr" 
+            class="form-textarea" 
+            [placeholder]="translate('form.descriptionPlaceholder')"
+            rows="6"
+            ngModel
+          ></textarea>
+        </div>
+        <div class="lang-input-group">
+          <label class="lang-label">{{ translate('form.descriptionEn') }}</label>
+          <textarea 
+            id="descriptionEn" 
+            name="descriptionEn" 
+            class="form-textarea" 
+            [placeholder]="translate('form.descriptionPlaceholderEn')"
+            rows="6"
+            ngModel
+          ></textarea>
+        </div>
+      </div>
     </div>
 
     <div class="form-section">
@@ -83,7 +113,7 @@
           id="github" 
           name="github" 
           class="form-input" 
-          placeholder="https://github.com/username/project"
+          [placeholder]="translate('form.githubPlaceholder')"
           ngModel
         />
       </div>
@@ -98,7 +128,7 @@
           id="demo" 
           name="demo" 
           class="form-input" 
-          placeholder="https://jamesstudio.fr/project"
+          [placeholder]="translate('form.demoPlaceholder')"
           ngModel
         />
       </div>

@@ -40,10 +40,16 @@ export class TranslationService {
     'projects.viewDemo': { fr: 'Voir la démo', en: 'View demo' },
     'projects.demo': { fr: 'Démo', en: 'Demo' },
     'projects.github': { fr: 'GitHub', en: 'GitHub' },
+    'projects.githubLink': { fr: 'GitHub', en: 'GitHub' },
+    'projects.demoLink': { fr: 'Démo', en: 'Demo' },
     'projects.author': { fr: 'Auteur', en: 'Author' },
     'projects.lastUpdate': { fr: 'Dernière mise à jour', en: 'Last updated' },
     'projects.createdAt': { fr: 'Date de création', en: 'Created at' },
     'projects.notSpecified': { fr: 'Non spécifiée', en: 'Not specified' },
+    'projects.videoNotSupported': { fr: 'Votre navigateur ne supporte pas la lecture de vidéos.', en: 'Your browser does not support video playback.' },
+    'projects.clear': { fr: 'Effacer', en: 'Clear' },
+    'projects.imageAlt': { fr: 'Image du projet', en: 'Project image' },
+    'projects.videoTitle': { fr: 'Vidéo du projet', en: 'Project video' },
     
     'form.addProject': { fr: 'Ajouter un Projet', en: 'Add Project' },
     'form.projectImages': { fr: 'Images du Projet', en: 'Project Images' },
@@ -51,30 +57,54 @@ export class TranslationService {
     'form.chooseImages': { fr: 'Choisir des images', en: 'Choose images' },
     'form.dragDrop': { fr: 'Cliquez ou glissez-déposez pour ajouter des images', en: 'Click or drag and drop to add images' },
     'form.title': { fr: 'Titre du Projet', en: 'Project Title' },
+    'form.titleFr': { fr: 'Titre (Français)', en: 'Title (French)' },
+    'form.titleEn': { fr: 'Titre (Anglais)', en: 'Title (English)' },
     'form.titlePlaceholder': { fr: 'Ex: Mon Portfolio Web', en: 'Ex: My Web Portfolio' },
+    'form.titlePlaceholderEn': { fr: 'Ex: My Web Portfolio', en: 'Ex: My Web Portfolio' },
     'form.description': { fr: 'Description', en: 'Description' },
+    'form.descriptionFr': { fr: 'Description (Français)', en: 'Description (French)' },
+    'form.descriptionEn': { fr: 'Description (Anglais)', en: 'Description (English)' },
     'form.descriptionPlaceholder': { fr: 'Décrivez votre projet, ses fonctionnalités, les technologies utilisées...', en: 'Describe your project, its features, technologies used...' },
+    'form.descriptionPlaceholderEn': { fr: 'Describe your project, its features, technologies used...', en: 'Describe your project, its features, technologies used...' },
     'form.technologies': { fr: 'Technologies Utilisées', en: 'Technologies Used' },
     'form.technologiesPlaceholder': { fr: 'Ex: Angular, TypeScript, Node.js, MySQL (séparées par des virgules)', en: 'Ex: Angular, TypeScript, Node.js, MySQL (comma separated)' },
     'form.technologiesHint': { fr: 'Séparez les technologies par des virgules', en: 'Separate technologies with commas' },
     'form.projectLinks': { fr: 'Liens du Projet', en: 'Project Links' },
     'form.githubLink': { fr: 'Lien GitHub', en: 'GitHub Link' },
+    'form.githubPlaceholder': { fr: 'https://github.com/username/project', en: 'https://github.com/username/project' },
     'form.demoLink': { fr: 'Lien de Démo (optionnel)', en: 'Demo Link (optional)' },
+    'form.demoPlaceholder': { fr: 'https://jamesstudio.fr/project', en: 'https://jamesstudio.fr/project' },
     'form.submit': { fr: 'Ajouter le Projet', en: 'Add Project' },
     'form.submitting': { fr: 'Création en cours...', en: 'Creating...' },
     'form.required': { fr: '*', en: '*' },
+    'form.validationErrors': { fr: 'Erreurs de validation', en: 'Validation errors' },
+    'form.titleLabel': { fr: 'Titre :', en: 'Title:' },
+    'form.descriptionLabel': { fr: 'Description :', en: 'Description:' },
+    'form.githubLabel': { fr: 'GitHub :', en: 'GitHub:' },
+    'form.demoLabel': { fr: 'Démo :', en: 'Demo:' },
+    'form.titleRequired': { fr: 'Le titre du projet est requis', en: 'Project title is required' },
+    'form.titleTooLong': { fr: 'Le titre ne doit pas dépasser 100 caractères', en: 'Title must not exceed 100 characters' },
+    'form.descriptionRequired': { fr: 'La description du projet est requise', en: 'Project description is required' },
+    'form.descriptionTooLong': { fr: 'La description ne doit pas dépasser 2000 caractères', en: 'Description must not exceed 2000 characters' },
+    'form.githubInvalid': { fr: 'L\'URL GitHub n\'est pas valide', en: 'GitHub URL is not valid' },
+    'form.githubNotValid': { fr: 'L\'URL doit être un lien GitHub valide', en: 'URL must be a valid GitHub link' },
+    'form.demoInvalid': { fr: 'L\'URL de démo n\'est pas valide', en: 'Demo URL is not valid' },
+    'form.formNotInitialized': { fr: 'Erreur: Formulaire non initialisé', en: 'Error: Form not initialized' },
+    'form.fillRequiredFields': { fr: 'Veuillez remplir tous les champs requis', en: 'Please fill in all required fields' },
+    'form.projectCreated': { fr: 'Projet ajouté avec succès !', en: 'Project added successfully!' },
+    'form.projectCreationError': { fr: 'Erreur lors de la création du projet', en: 'Error creating project' },
+    'form.projectUpdated': { fr: 'Projet mis à jour avec succès !', en: 'Project updated successfully!' },
+    'form.projectUpdateError': { fr: 'Erreur lors de la mise à jour du projet', en: 'Error updating project' },
+    'form.projectDeleted': { fr: 'Projet supprimé avec succès !', en: 'Project deleted successfully!' },
+    'form.projectDeletionError': { fr: 'Erreur lors de la suppression du projet', en: 'Error deleting project' },
+    'form.projectNotFound': { fr: 'Projet non trouvé', en: 'Project not found' },
+    'form.projectNotFoundError': { fr: 'Erreur lors de la recherche du projet', en: 'Error searching project' },
+    'form.projectNotFoundMessage': { fr: 'Le projet que vous recherchez n\'existe pas.', en: 'The project you are looking for does not exist.' },
+    'form.projectNotFoundButton': { fr: 'Retour à la page d\'accueil', en: 'Return to home page' },
+    'form.projectNotFoundButtonLink': { fr: '/', en: '/' },
+    'form.projectNotFoundButtonText': { fr: 'Retour à la page d\'accueil', en: 'Return to home page' },
+    'form.projectNotFoundButtonLinkText': { fr: 'Retour à la page d\'accueil', en: 'Return to home page' },
     
-    'developer.myProjects': { fr: 'Mes Projets', en: 'My Projects' },
-    'developer.loading': { fr: 'Chargement...', en: 'Loading...' },
-    'developer.noProjects': { fr: 'Vous n\'avez pas encore créé de projets.', en: 'You haven\'t created any projects yet.' },
-    'developer.edit': { fr: 'Modifier', en: 'Edit' },
-    'developer.delete': { fr: 'Supprimer', en: 'Delete' },
-    'developer.editProject': { fr: 'Modifier le Projet', en: 'Edit Project' },
-    'developer.save': { fr: 'Enregistrer', en: 'Save' },
-    'developer.cancel': { fr: 'Annuler', en: 'Cancel' },
-    'developer.deleteConfirm': { fr: 'Êtes-vous sûr de vouloir supprimer ce projet ?', en: 'Are you sure you want to delete this project?' },
-    'developer.yes': { fr: 'Oui', en: 'Yes' },
-    'developer.no': { fr: 'Non', en: 'No' },
     
     'contact.title': { fr: 'Contact & Paramètres', en: 'Contact & Settings' },
     'contact.subtitle': { fr: 'Gérez vos paramètres et déconnectez-vous', en: 'Manage your settings and sign out' },
@@ -168,11 +198,28 @@ export class TranslationService {
     
     'contact.warningEmail': { fr: 'Pour sauvegarder vos préférences, définissez d\'abord votre adresse email dans la section "Mon Compte".', en: 'To save your preferences, first set your email address in the "My Account" section.' },
     
+    'developer.myProjects': { fr: 'Mes Projets', en: 'My Projects' },
+    'developer.loading': { fr: 'Chargement...', en: 'Loading...' },
+    'developer.noProjects': { fr: 'Vous n\'avez pas encore créé de projets.', en: 'You haven\'t created any projects yet.' },
+    'developer.edit': { fr: 'Modifier', en: 'Edit' },
+    'developer.delete': { fr: 'Supprimer', en: 'Delete' },
+    'developer.editProject': { fr: 'Modifier le Projet', en: 'Edit Project' },
+    'developer.save': { fr: 'Enregistrer', en: 'Save' },
+    'developer.cancel': { fr: 'Annuler', en: 'Cancel' },
+    'developer.deleteConfirm': { fr: 'Êtes-vous sûr de vouloir supprimer ce projet ?', en: 'Are you sure you want to delete this project?' },
+    'developer.yes': { fr: 'Oui', en: 'Yes' },
+    'developer.no': { fr: 'Non', en: 'No' },
     'developer.description': { fr: 'Description :', en: 'Description:' },
     'developer.technologies': { fr: 'Technologies :', en: 'Technologies:' },
     'developer.title': { fr: 'Titre', en: 'Title' },
     'developer.technologiesComma': { fr: 'Technologies (séparées par des virgules)', en: 'Technologies (comma separated)' },
     'developer.authorStudio': { fr: 'Auteur/Studio', en: 'Author/Studio' },
+    
+    'category.authorStudio': { fr: 'Auteur / Studio', en: 'Author / Studio' },
+    'category.writeHere': { fr: 'écrivez ici...', en: 'write here...' },
+    'category.madeWith': { fr: 'Fait avec', en: 'Made with' },
+    'category.genre': { fr: 'Genre', en: 'Genre' },
+    'category.tags': { fr: 'Tags', en: 'Tags' },
   };
 
   constructor() {
@@ -202,5 +249,29 @@ export class TranslationService {
 
   get(key: string): string {
     return this.translate(key);
+  }
+
+  getMultilingualText(text: string | { fr?: string; en?: string } | undefined, fallback: string = ''): string {
+    if (!text) return fallback;
+    
+    if (typeof text === 'string') {
+      try {
+        const parsed = JSON.parse(text);
+        if (typeof parsed === 'object' && parsed !== null) {
+          const lang = this.getCurrentLanguage();
+          return parsed[lang] || parsed.fr || parsed.en || fallback;
+        }
+      } catch (e) {
+        return text;
+      }
+      return text;
+    }
+    
+    if (typeof text === 'object' && text !== null) {
+      const lang = this.getCurrentLanguage();
+      return text[lang] || text.fr || text.en || fallback;
+    }
+    
+    return fallback;
   }
 }

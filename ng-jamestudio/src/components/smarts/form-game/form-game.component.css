@@ -50,6 +50,25 @@
   margin-top: -var(--spacing-xs);
 }
 
+.multilingual-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.lang-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.lang-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
 .image-section {
   margin-bottom: var(--spacing-md);
 }

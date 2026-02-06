@@ -4,16 +4,16 @@
             <div class="image">
                 <img *ngIf="!isVideo" 
                      [src]="mediaUrl" 
-                     [alt]="game.title || 'Image du projet'" 
+                     [alt]="game.title || translate.get('projects.imageAlt')" 
                      (error)="onImageError($event)">
                 <video *ngIf="isVideo" 
                        [src]="mediaUrl" 
-                       [title]="game.title || 'Vidéo du projet'"
+                       [title]="game.title || translate.get('projects.videoTitle')"
                        preload="metadata"
                        muted
                        (error)="onVideoError($event)"
                        (click)="$event.preventDefault(); $event.stopPropagation()">
-                  Votre navigateur ne supporte pas la lecture de vidéos.
+                  {{ translate.get('projects.videoNotSupported') }}
                 </video>
                 <div *ngIf="isVideo" class="video-overlay">
                   <i class="fas fa-play"></i>
@@ -21,10 +21,10 @@
             </div>
             <div class="content-game">
                 <div class="title">
-                    <h2> {{game.title}}</h2>
+                    <h2>{{ translate.getMultilingualText(game.title) }}</h2>
                 </div>
                 <div class="description">
-                  <textarea value={{game.description}} readonly></textarea>
+                  <textarea [value]="translate.getMultilingualText(game.description)" readonly></textarea>
                 </div>
                 <div class="authorStudio">
                     <h3>{{game.authorStudio}}</h3>
@@ -36,10 +36,10 @@
                 </div>
                 <div class="links" *ngIf="game.github || game.demo">
                     <a *ngIf="game.github" [href]="game.github" target="_blank" class="github-link" (click)="$event.stopPropagation()">
-                        GitHub
+                        {{ translate.get('projects.githubLink') }}
                     </a>
                     <a *ngIf="game.demo" [href]="game.demo" target="_blank" class="demo-link" (click)="$event.stopPropagation()">
-                        Démo
+                        {{ translate.get('projects.demoLink') }}
                     </a>
                 </div>
             </div>

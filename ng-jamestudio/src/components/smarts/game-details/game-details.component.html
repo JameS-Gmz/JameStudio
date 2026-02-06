@@ -1,6 +1,6 @@
 <div class="project-details-page" *ngIf="project && project.id">
     <div class="project-header">
-        <h1 class="project-title">{{project?.title || translate('gameDetails.loading')}}</h1>
+        <h1 class="project-title">{{translationService.getMultilingualText(project?.title) || translate('gameDetails.loading')}}</h1>
         
         <div class="project-carousel">
             <app-carousel [images]="images"></app-carousel>
@@ -12,7 +12,7 @@
             <section class="project-section description-section">
                 <h2>{{ translate('projects.description') }}</h2>
                 <div class="description-content">
-                    <p>{{project?.description || translate('gameDetails.noDescription')}}</p>
+                    <p>{{translationService.getMultilingualText(project?.description) || translate('gameDetails.noDescription')}}</p>
                 </div>
             </section>
 

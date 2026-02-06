@@ -11,22 +11,22 @@
   <div class="form-input">
     <label class="input-label" for="author-studio" required>
       <input type="text" id="author-studio" class="input-field"  [(ngModel)]="formData.authorStudio" name="authorStudio"
-        placeholder="écrivez ici..." >
-        Auteur / Studio
+        [placeholder]="translate.get('category.writeHere')" >
+        {{ translate.get('category.authorStudio') }}
     </label>
   </div>
 
   <div class="form-input">
     <label class="input-label" for="madewith" required>
       <input type="text" id="madewith" class="input-field"
-        placeholder="écrivez ici..." [(ngModel)]="formData.madeWith" name="madewith"/>
-      <p>Fait avec</p>
+        [placeholder]="translate.get('category.writeHere')" [(ngModel)]="formData.madeWith" name="madewith"/>
+      <p>{{ translate.get('category.madeWith') }}</p>
     </label>
   </div>
 </div>
 
     <fieldset class="genre">
-      <legend>Genre</legend>
+      <legend>{{ translate.get('category.genre') }}</legend>
       <div class="genre-column" *ngFor="let genre of genreList">
         <app-checkbox-template
           [text]="genre.name" 
@@ -38,7 +38,7 @@
     </fieldset>
 
     <fieldset class="tags">
-      <legend>Tags</legend>
+      <legend>{{ translate.get('category.tags') }}</legend>
       <div class="tags-column" *ngFor="let tag of tagList">
         <app-checkbox-template 
           [text]="tag.name" 

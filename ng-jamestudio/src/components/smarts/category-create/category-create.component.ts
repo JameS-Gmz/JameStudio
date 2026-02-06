@@ -6,6 +6,7 @@ import { SelectComponentsComponent } from '../select-components/select-component
 import { CommonModule } from '@angular/common';
 import { CheckboxTemplateComponent } from '../../dumbs/checkbox-template/checkbox-template.component';
 import { DataFetchService } from '../../../services/data-fetch.service';
+import { TranslationService } from '../../../services/translation.service';
 
 
 @Component({
@@ -17,7 +18,10 @@ import { DataFetchService } from '../../../services/data-fetch.service';
 })
 export class CategoryCreateComponent implements OnInit {
 
-  constructor(private datafetchService: DataFetchService) { }
+  constructor(
+    private datafetchService: DataFetchService,
+    public translate: TranslationService
+  ) { }
 
   genreList: any[] = [];
   tagList : any[] = [];

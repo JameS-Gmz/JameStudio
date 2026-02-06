@@ -12,7 +12,7 @@
   <div *ngIf="!loading && !error" class="projects-list">
     <div *ngFor="let project of projects" class="project-card">
       <div class="project-header">
-        <h2>{{ project.title }}</h2>
+        <h2>{{ translationService.getMultilingualText(project.title) }}</h2>
         <div class="project-actions">
           <button class="edit-btn" (click)="editProject(project)">{{ translate('developer.edit') }}</button>
           <button class="delete-btn" (click)="requestDeleteProject(project.id)" *ngIf="!showDeleteConfirm || projectToDelete !== project.id">{{ translate('developer.delete') }}</button>
@@ -34,7 +34,7 @@
       </div>
       
       <div class="project-info">
-        <p><strong>{{ translate('developer.description') }}</strong> {{ project.description }}</p>
+        <p><strong>{{ translate('developer.description') }}</strong> {{ translationService.getMultilingualText(project.description) }}</p>
         <div *ngIf="project.technologies && project.technologies.length > 0" class="technologies">
           <strong>{{ translate('developer.technologies') }}</strong>
           <span *ngFor="let tech of project.technologies" class="tech-tag">{{tech}}</span>
@@ -53,13 +53,31 @@
       <h2>{{ translate('developer.editProject') }}</h2>
       <form (ngSubmit)="updateProject()">
         <div class="form-group">
-          <label for="title">{{ translate('developer.title') }}</label>
-          <input type="text" id="title" [(ngModel)]="selectedProject.title" name="title" required>
+          <label>{{ translate('developer.title') }}</label>
+          <div class="multilingual-input">
+            <div class="lang-input-group">
+              <label class="lang-label">{{ translate('form.titleFr') }}</label>
+              <input type="text" id="titleFr" [(ngModel)]="selectedProject.titleFr" name="titleFr">
+            </div>
+            <div class="lang-input-group">
+              <label class="lang-label">{{ translate('form.titleEn') }}</label>
+              <input type="text" id="titleEn" [(ngModel)]="selectedProject.titleEn" name="titleEn">
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="description">{{ translate('form.description') }}</label>
-          <textarea id="description" [(ngModel)]="selectedProject.description" name="description" required></textarea>
+          <label>{{ translate('form.description') }}</label>
+          <div class="multilingual-input">
+            <div class="lang-input-group">
+              <label class="lang-label">{{ translate('form.descriptionFr') }}</label>
+              <textarea id="descriptionFr" [(ngModel)]="selectedProject.descriptionFr" name="descriptionFr" rows="4"></textarea>
+            </div>
+            <div class="lang-input-group">
+              <label class="lang-label">{{ translate('form.descriptionEn') }}</label>
+              <textarea id="descriptionEn" [(ngModel)]="selectedProject.descriptionEn" name="descriptionEn" rows="4"></textarea>
+            </div>
+          </div>
         </div>
 
         <div class="form-group">

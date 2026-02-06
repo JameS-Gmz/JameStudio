@@ -22,7 +22,7 @@ export class ThemeService {
   private getDefaultTheme(): ThemeColors {
     return {
       background: '#1F1F1F',
-      accent: '#795c53'
+      accent: '#FFFFFF'
     };
   }
 

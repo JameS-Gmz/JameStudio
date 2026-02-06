@@ -44,9 +44,20 @@ export class FormGameComponent implements OnDestroy {
       ? this.postGameForm.value.technologies.split(',').map((tech: string) => tech.trim()).filter((tech: string) => tech.length > 0)
       : [];
     
+    const titleFr = this.postGameForm.value.titleFr || '';
+    const titleEn = this.postGameForm.value.titleEn || '';
+    const descriptionFr = this.postGameForm.value.descriptionFr || '';
+    const descriptionEn = this.postGameForm.value.descriptionEn || '';
+    
+    const title = titleFr || titleEn || '';
+    const description = JSON.stringify({
+      fr: descriptionFr || descriptionEn || '',
+      en: descriptionEn || descriptionFr || ''
+    });
+    
     return {
-      title: this.postGameForm.value.title,
-      description: this.postGameForm.value.description,
+      title: title || JSON.stringify({ fr: titleFr, en: titleEn }),
+      description: description,
       technologies: technologies,
       github: this.postGameForm.value.github || null,
       demo: this.postGameForm.value.demo || null,

@@ -34,6 +34,25 @@ h1, h2, h3, h4, h5, h6,
   color: var(--text-main, #fff) !important;
 }
 
+.multilingual-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.lang-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.lang-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
 h1 {
   margin-bottom: var(--spacing-lg);
   text-align: center;

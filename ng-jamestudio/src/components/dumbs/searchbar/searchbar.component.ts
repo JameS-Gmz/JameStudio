@@ -29,7 +29,7 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   constructor(
     private projectService: ProjectService, 
     private fileService: FileService,
-    private translationService: TranslationService,
+    public translationService: TranslationService,
     private elementRef: ElementRef
   ) {}
 

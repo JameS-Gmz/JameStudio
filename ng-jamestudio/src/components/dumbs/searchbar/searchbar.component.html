@@ -8,7 +8,7 @@
       (input)="onInput()"
       [disabled]="isLoading" />
     <button class="search-btn" (click)="reset()">
-      <img src="/ion_cross.svg" alt="Effacer">
+      <img src="/ion_cross.svg" [alt]="translate('projects.clear')">
     </button>
   </div>
 
@@ -30,11 +30,11 @@
             <div class="project-preview">
               <img class="imageUrl" [src]="project.imageUrl" [alt]="project.title">
               <div class="project-info">
-                <strong>{{ project.title }}</strong>
+                <strong>{{ translationService.getMultilingualText(project.title) }}</strong>
                 <div class="technologies" *ngIf="project.technologies && project.technologies.length > 0">
                   <span *ngFor="let tech of project.technologies" class="tech-tag-small">{{tech}}</span>
                 </div>
-                <p class="description">{{ project.description | slice:0:100 }}...</p>
+                <p class="description">{{ translationService.getMultilingualText(project.description) | slice:0:100 }}...</p>
               </div>
             </div>
           </a>

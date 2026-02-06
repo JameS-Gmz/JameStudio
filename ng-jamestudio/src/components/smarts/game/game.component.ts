@@ -4,6 +4,7 @@ import { ProjectService } from '../../../services/project.service';
 import { FormGameComponent } from '../form-game/form-game.component';
 import { FileService } from '../../../services/file-service.service';
 import { CommonModule } from '@angular/common';
+import { TranslationService } from '../../../services/translation.service';
 
 interface FormErrors {
   title?: string;
@@ -31,7 +32,8 @@ export class GameComponent implements AfterViewInit {
 
   constructor(
     private projectService: ProjectService,
-    private fileService: FileService
+    private fileService: FileService,
+    public translate: TranslationService
   ) { }
 
   ngAfterViewInit(): void { }
@@ -63,26 +65,54 @@ export class GameComponent implements AfterViewInit {
   private validateForm(postGameFormValues: any): FormErrors {
     const errors: FormErrors = {};
 
-    if (!postGameFormValues.title?.trim()) {
-      errors.title = 'Le titre du projet est requis';
-    } else if (postGameFormValues.title.length > 100) {
-      errors.title = 'Le titre ne doit pas dépasser 100 caractères';
+    let titleText = '';
+    if (typeof postGameFormValues.title === 'string') {
+      try {
+        const parsed = JSON.parse(postGameFormValues.title);
+        if (typeof parsed === 'object' && parsed !== null) {
+          titleText = parsed.fr || parsed.en || '';
+        } else {
+          titleText = postGameFormValues.title;
+        }
+      } catch (e) {
+        titleText = postGameFormValues.title;
+      }
     }
 
-    if (!postGameFormValues.description?.trim()) {
-      errors.description = 'La description du projet est requise';
-    } else if (postGameFormValues.description.length > 2000) {
-      errors.description = 'La description ne doit pas dépasser 2000 caractères';
+    if (!titleText?.trim()) {
+      errors.title = this.translate.get('form.titleRequired');
+    } else if (titleText.length > 100) {
+      errors.title = this.translate.get('form.titleTooLong');
+    }
+
+    let descriptionText = '';
+    if (typeof postGameFormValues.description === 'string') {
+      try {
+        const parsed = JSON.parse(postGameFormValues.description);
+        if (typeof parsed === 'object' && parsed !== null) {
+          descriptionText = parsed.fr || parsed.en || '';
+        } else {
+          descriptionText = postGameFormValues.description;
+        }
+      } catch (e) {
+        descriptionText = postGameFormValues.description;
+      }
+    }
+
+    if (!descriptionText?.trim()) {
+      errors.description = this.translate.get('form.descriptionRequired');
+    } else if (descriptionText.length > 2000) {
+      errors.description = this.translate.get('form.descriptionTooLong');
     }
 
     if (postGameFormValues.github && postGameFormValues.github.trim() !== '') {
       try {
         const url = new URL(postGameFormValues.github);
         if (!url.hostname.includes('github.com')) {
-          errors.github = 'L\'URL doit être un lien GitHub valide';
+          errors.github = this.translate.get('form.githubNotValid');
         }
       } catch (e) {
-        errors.github = 'L\'URL GitHub n\'est pas valide';
+        errors.github = this.translate.get('form.githubInvalid');
       }
     }
 
@@ -90,7 +120,7 @@ export class GameComponent implements AfterViewInit {
       try {
         new URL(postGameFormValues.demo);
       } catch (e) {
-        errors.demo = 'L\'URL de démo n\'est pas valide';
+        errors.demo = this.translate.get('form.demoInvalid');
       }
     }
 
@@ -99,12 +129,12 @@ export class GameComponent implements AfterViewInit {
 
   async onSubmit() {
     if (!this.postGameForm) {
-      this.showError({ general: 'Erreur: Formulaire non initialisé' });
+      this.showError({ general: this.translate.get('form.formNotInitialized') });
       return;
     }
 
     if (!this.postGameForm.isValid()) {
-      this.showError({ general: 'Veuillez remplir tous les champs requis' });
+      this.showError({ general: this.translate.get('form.fillRequiredFields') });
       return;
     }
 
@@ -144,7 +174,7 @@ export class GameComponent implements AfterViewInit {
         }
       }
 
-      this.showSuccess('Projet ajouté avec succès !');
+      this.showSuccess(this.translate.get('form.projectCreated'));
       
       setTimeout(() => {
         this.postGameForm.resetForm();
@@ -153,7 +183,7 @@ export class GameComponent implements AfterViewInit {
     } catch (error: any) {
       console.error('Erreur lors de la création du projet:', error);
       this.showError({ 
-        general: error.message || 'Erreur lors de la création du projet'
+        general: error.message || this.translate.get('form.projectCreationError')
       });
       this.isSubmitting = false;
     }

@@ -3,22 +3,22 @@
     <div *ngIf="hasErrors" class="error-container">
       <div class="error-header">
         <i class="fas fa-exclamation-circle"></i>
-        <strong>Erreurs de validation</strong>
+        <strong>{{ translate.get('form.validationErrors') }}</strong>
       </div>
       <div *ngIf="formErrors.general" class="error-message general-error">
         {{ formErrors.general }}
       </div>
       <div *ngIf="formErrors.title" class="error-message field-error">
-        <strong>Titre :</strong> {{ formErrors.title }}
+        <strong>{{ translate.get('form.titleLabel') }}</strong> {{ formErrors.title }}
       </div>
       <div *ngIf="formErrors.description" class="error-message field-error">
-        <strong>Description :</strong> {{ formErrors.description }}
+        <strong>{{ translate.get('form.descriptionLabel') }}</strong> {{ formErrors.description }}
       </div>
       <div *ngIf="formErrors.github" class="error-message field-error">
-        <strong>GitHub :</strong> {{ formErrors.github }}
+        <strong>{{ translate.get('form.githubLabel') }}</strong> {{ formErrors.github }}
       </div>
       <div *ngIf="formErrors.demo" class="error-message field-error">
-        <strong>Démo :</strong> {{ formErrors.demo }}
+        <strong>{{ translate.get('form.demoLabel') }}</strong> {{ formErrors.demo }}
       </div>
     </div>
     
@@ -40,7 +40,7 @@
       >
         <i class="fas fa-plus-circle" *ngIf="!isSubmitting"></i>
         <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
-        <span>{{ isSubmitting ? 'Création en cours...' : 'Ajouter le Projet' }}</span>
+        <span>{{ isSubmitting ? translate.get('form.submitting') : translate.get('form.submit') }}</span>
       </button>
     </div>
   </div>

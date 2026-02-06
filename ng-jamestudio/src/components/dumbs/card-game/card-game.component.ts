@@ -6,6 +6,7 @@ import { ApiConfigService } from '../../../services/api-config.service';
 import { LoggerService } from '../../../services/logger.service';
 import { Project } from '../../../models/project.model';
 import { APP_CONSTANTS } from '../../../constants/app.constants';
+import { TranslationService } from '../../../services/translation.service';
 
 @Component({
   selector: 'app-card-game',
@@ -23,7 +24,8 @@ export class CardGameComponent implements OnInit {
   constructor(
     private fileService: FileService,
     private apiConfig: ApiConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public translate: TranslationService
   ) {}
 
   private getFullImageUrl(url: string): string {

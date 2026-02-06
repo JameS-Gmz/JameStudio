@@ -26,7 +26,7 @@ export class DeveloperComponent implements OnInit, OnDestroy {
   constructor(
     private projectService: ProjectService,
     private userService: UserService,
-    private translationService: TranslationService
+    public translationService: TranslationService
   ) {}
 
   ngOnDestroy(): void {
@@ -63,8 +63,57 @@ export class DeveloperComponent implements OnInit, OnDestroy {
   }
 
   editProject(project: any) {
-    this.selectedProject = { ...project };
+    const titleFr = this.translationService.getMultilingualText(project.title, '');
+    const titleEn = this.translationService.getMultilingualText(project.title, '');
+    const descriptionFr = this.translationService.getMultilingualText(project.description, '');
+    const descriptionEn = this.translationService.getMultilingualText(project.description, '');
+    
+    let parsedTitle: any = {};
+    let parsedDescription: any = {};
+    
+    try {
+      if (typeof project.title === 'string') {
+        const titleParsed = JSON.parse(project.title);
+        if (typeof titleParsed === 'object' && titleParsed !== null) {
+          parsedTitle = titleParsed;
+        } else {
+          parsedTitle = { fr: project.title, en: '' };
+        }
+      } else if (typeof project.title === 'object') {
+        parsedTitle = project.title;
+      } else {
+        parsedTitle = { fr: project.title || '', en: '' };
+      }
+    } catch (e) {
+      parsedTitle = { fr: project.title || '', en: '' };
+    }
+    
+    try {
+      if (typeof project.description === 'string') {
+        const descParsed = JSON.parse(project.description);
+        if (typeof descParsed === 'object' && descParsed !== null) {
+          parsedDescription = descParsed;
+        } else {
+          parsedDescription = { fr: project.description || '', en: '' };
+        }
+      } else if (typeof project.description === 'object') {
+        parsedDescription = project.description;
+      } else {
+        parsedDescription = { fr: project.description || '', en: '' };
+      }
+    } catch (e) {
+      parsedDescription = { fr: project.description || '', en: '' };
+    }
+    
+    this.selectedProject = { 
+      ...project,
+      titleFr: parsedTitle.fr || '',
+      titleEn: parsedTitle.en || '',
+      descriptionFr: parsedDescription.fr || '',
+      descriptionEn: parsedDescription.en || ''
+    };
     this.isEditing = true;
+    this.scrollToEditForm();
   }
 
   scrollToEditForm() {
@@ -85,11 +134,22 @@ export class DeveloperComponent implements OnInit, OnDestroy {
     try {
       if (!this.selectedProject) return;
 
+      const titleFr = this.selectedProject.titleFr || '';
+      const titleEn = this.selectedProject.titleEn || '';
+      const descriptionFr = this.selectedProject.descriptionFr || '';
+      const descriptionEn = this.selectedProject.descriptionEn || '';
+      
+      const title = titleFr || titleEn || '';
+      const description = JSON.stringify({
+        fr: descriptionFr || descriptionEn || '',
+        en: descriptionEn || descriptionFr || ''
+      });
+
       const updatedProject = await this.projectService.updateProject(
         this.selectedProject.id.toString(),
         {
-          title: this.selectedProject.title,
-          description: this.selectedProject.description,
+          title: title || JSON.stringify({ fr: titleFr, en: titleEn }),
+          description: description,
           technologies: this.selectedProject.technologies,
           github: this.selectedProject.github,
           demo: this.selectedProject.demo,
