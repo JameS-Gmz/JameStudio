@@ -95,8 +95,12 @@
 }
 
 .navbar-nav li.active > a {
-  color: var(--bg-primary);
+  color: #1F1F1F !important;
   font-weight: 600;
+}
+
+.navbar-nav li.active > a i {
+  color: #1F1F1F !important;
 }
 
 .navbar-right-section {

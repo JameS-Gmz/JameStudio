@@ -63,6 +63,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy, OnInit {
         this.languageSubscription = this.translationService.currentLanguage$.subscribe(lang => {
             this.currentLanguage = lang;
             this.cdr.detectChanges();
+            setTimeout(() => this.updateHoriSelector(), 150);
         });
         this.currentLanguage = this.translationService.getCurrentLanguage();
 
